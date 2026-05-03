@@ -3,216 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRAQI | Pro Hub</title>
+    <title>عراقي | Pro Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-purple: #9d00ff;
-            --neon-blue: #00f3ff;
-            --neon-green-dark: #004d00;
-            --bg-dark: #05000a;
-            --robot-color: #9d00ff;
-            --robot-red: #ff003c;
-            --robot-size: 45px;
-        }
-
+        :root { --neon-purple: #9d00ff; --neon-blue: #00f3ff; --neon-green-dark: #004d00; --bg-dark: #05000a; --robot-color: #9d00ff; --robot-red: #ff003c; --robot-size: 45px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg-dark);
-            min-height: 100vh;
-            display: flex; 
-            flex-direction: column;
-            justify-content: flex-start; 
-            align-items: center;
-            padding: 90px 20px 50px; 
-            color: #fff;
-            overflow-x: hidden; 
-            position: relative;
-            font-family: 'Tajawal', sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
-            transform: translateZ(0);
-        }
-
-        /* --- Background Effects --- */
-        #rainCanvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1s ease-in; 
-        }
-
-        .lightning {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(200, 0, 255, 0.15); opacity: 0;
-            pointer-events: none; z-index: 9998; transition: opacity 0.1s;
-        }
-
-        /* --- Corner Icons --- */
-        .bg-icon { position: absolute; z-index: 150; width: 120px; pointer-events: none; opacity: 0; }
-        .bg-ae { top: 20px; right: 20px; filter: drop-shadow(0 0 25px var(--neon-purple)); animation: fadeInIcon 0.5s forwards 0.2s, float 6s infinite 0.5s; }
-        .bg-am { bottom: 85px; left: 20px; border-radius: 50%; filter: drop-shadow(0 0 25px var(--neon-green-dark)); animation: fadeInIcon 0.5s forwards 0.2s, float-rev 7s infinite 0.5s; }
-        
+        body { background-color: var(--bg-dark); min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 90px 20px 50px; color: #fff; overflow-x: hidden; position: relative; font-family: 'Tajawal', sans-serif; user-select: none; -webkit-user-select: none; transform: translateZ(0); }
+        #rainCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1s ease-in; }
+        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(200, 0, 255, 0.15); opacity: 0; pointer-events: none; z-index: 9998; transition: opacity 0.1s; }
+        .bg-icon { position: absolute; z-index: 150; width: 120px; pointer-events: none; opacity: 0; will-change: transform, opacity; }
+        .bg-ae { top: 20px; right: 20px; filter: drop-shadow(0 0 25px var(--neon-purple)); animation: fadeInIcon 0.5s ease forwards 0.2s, float 6s infinite 0.5s; }
+        .bg-am { bottom: 85px; left: 20px; border-radius: 50%; filter: drop-shadow(0 0 25px var(--neon-green-dark)); animation: fadeInIcon 0.5s ease forwards 0.2s, float-rev 7s infinite 0.5s; }
         @keyframes fadeInIcon { to { opacity: 1; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes float-rev { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(15px); } }
-
-        /* --- Container --- */
-        .container {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(15, 0, 25, 0.4) 100%);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(157, 0, 255, 0.2); border-radius: 30px; padding: 50px 30px;
-            width: 100%; max-width: 440px; text-align: center; position: relative; z-index: 100;
-            box-shadow: 0 0 40px rgba(157, 0, 255, 0.1); margin: 0 auto; opacity: 0; transform: scale(0.95);
-            animation: containerReveal 0.4s forwards;
-        }
+        .container { background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(15, 0, 25, 0.4) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(157, 0, 255, 0.2); border-radius: 30px; padding: 50px 30px; width: 100%; max-width: 440px; text-align: center; position: relative; z-index: 100; box-shadow: 0 0 40px rgba(157, 0, 255, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.02); overflow: hidden; margin: 0 auto; opacity: 0; transform: scale(0.95); will-change: transform, opacity; animation: containerReveal 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         @keyframes containerReveal { to { opacity: 1; transform: scale(1); } }
-
-        #innerBouncingCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1s; }
-
-        .logo-container, .title-container, .crystal-panel, .link-btn, .visitor-badge-container, .copy-box { 
-            position: relative; z-index: 10; opacity: 0; animation: fadeInUpBlur 0.5s forwards;
-        }
-        @keyframes fadeInUpBlur {
-            0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
+        #innerBouncingCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1s ease-in; }
+        .logo-container, .title-container, .crystal-panel, .link-btn, .visitor-badge-container, .copy-box { position: relative; z-index: 10; opacity: 0; animation: fadeInUpBlur 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes fadeInUpBlur { 0% { opacity: 0; transform: translateY(20px); filter: blur(5px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
         .logo-container { animation-delay: 0.1s; width: 140px; height: 140px; margin: 0 auto 15px; border-radius: 50%; padding: 4px; background: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple); }
         .logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #05000a; }
-
         .title-container { animation-delay: 0.2s; margin: 15px auto 5px; }
         .title-img { width: 85%; max-width: 250px; display: block; margin: 0 auto; filter: drop-shadow(0 0 25px rgba(157, 0, 255, 0.9)); }
-        .glitch { animation: glitch 5s infinite; } 
+        .glitch { animation: glitch 5s infinite; }
         @keyframes glitch { 0%, 92%, 100% { transform: translate(0); } 94% { transform: translate(2px, -2px); } 96% { transform: translate(-2px, 2px); } }
-
-        .crystal-panel { animation-delay: 0.3s; margin: 5px auto 30px; padding: 12px 25px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; display: inline-block; }
-        .crystal-text { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 14px; background: linear-gradient(180deg, #ffffff 0%, #9aa0a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
+        .crystal-panel { animation-delay: 0.3s; margin: 5px auto 30px; padding: 12px 25px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 12px; overflow: hidden; display: inline-block; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+        .crystal-text { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 0%, #9aa0a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8)); position: relative; z-index: 2; }
         .links-wrapper { display: flex; flex-direction: column; gap: 15px; }
-        .link-btn {
-            display: flex; align-items: center; justify-content: center; text-decoration: none; color: #fff; background: rgba(0, 0, 0, 0.5);
-            padding: 18px; border-radius: 15px; font-size: 17px; font-weight: 700; border: 1px solid rgba(157, 0, 255, 0.3); transition: 0.2s;
-        }
-        .link-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #b400ff; border-color: var(--neon-purple); }
-        .btn-icon { width: 44px; height: 44px; margin-right: 12px; object-fit: contain; }
-
-        .copy-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(0, 243, 255, 0.3); border-radius: 10px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; animation-delay: 0.65s; transition: 0.3s; }
-        .copy-box:hover { border-color: #00f3ff; background: rgba(0, 243, 255, 0.05); }
-
-        .visitor-badge { margin-top: 35px; padding: 10px 25px; font-size: 14px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.15); animation-delay: 0.8s; }
-        .visitor-badge span { color: #d866ff; font-weight: 900; }
-
-        /* --- Robot --- */
-        .robot-wrapper { position: absolute; top: 45px; left: 50%; margin-left: -22.5px; width: var(--robot-size); height: var(--robot-size); z-index: 9999; opacity: 0; transition: opacity 0.5s; cursor: grab; }
-        .robot-body { width: 100%; height: 80%; background: var(--robot-color); border-radius: 12px; position: relative; box-shadow: 0 0 15px var(--robot-color); }
-        .robot-eye { width: 6px; height: 6px; background: #00f3ff; border-radius: 50%; position: absolute; top: 30%; box-shadow: 0 0 8px #00f3ff; }
-        .eye-left { left: 25%; } .eye-right { right: 25%; }
-        .robot-propeller { width: 60%; height: 4px; background: #fff; position: absolute; top: -6px; left: 20%; animation: spinBlade 0.1s linear infinite; }
-        @keyframes spinBlade { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
-        .light-beam { position: absolute; top: 50%; left: 22px; height: 2px; background: #00f3ff; width: 0; opacity: 0; transition: 0.3s; box-shadow: 0 0 15px #00f3ff; pointer-events: none; }
-        .btn-blue-reaction { border-color: #00f3ff !important; box-shadow: 0 0 20px #00f3ff !important; }
+        .link-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; color: #fff; background: rgba(0, 0, 0, 0.5); padding: 18px; border-radius: 15px; font-size: 17px; font-weight: 700; border: 1px solid rgba(157, 0, 255, 0.3); transition: all 0.2s ease; }
+        .link-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #b400ff, 0 0 30px #7a00ff; border-color: var(--neon-purple); }
+        .store-btn { background: linear-gradient(90deg, #4a00e0, #8e2de2); box-shadow: 0 0 15px rgba(157, 0, 255, 0.3); }
+        .btn-icon { width: 44px; height: 44px; margin-right: 12px; object-fit: contain; pointer-events: none; }
+        .btn-icon-telegram { transform: scale(1.3); }
+        .btn-icon-instagram { transform: scale(1.10); }
+        .glow-tiktok { filter: drop-shadow(0 0 8px rgba(220, 220, 220, 0.9)); }
+        .glow-telegram { filter: drop-shadow(0 0 8px #00f3ff); }
+        .glow-instagram { filter: drop-shadow(0 0 8px #ff007f); }
+        .btn-blue-reaction { background: rgba(0, 243, 255, 0.2) !important; box-shadow: 0 0 20px #00f3ff, 0 0 40px #00f3ff !important; border-color: #00f3ff !important; transform: scale(1.05) !important; }
+        .copy-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(0, 243, 255, 0.3); border-radius: 10px; padding: 15px 20px; margin-top: -8px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.3s ease; }
+        .copy-box:hover { background: rgba(0, 243, 255, 0.1); color: #00f3ff; border-color: #00f3ff; transform: scale(1.02); }
+        .copy-icon { font-size: 18px; filter: grayscale(100%); transition: 0.3s; }
+        .copy-box:hover .copy-icon { filter: grayscale(0%); }
+        .visitor-badge-container { margin-top: 35px; display: flex; justify-content: center; }
+        .visitor-badge { display: inline-flex; align-items: center; padding: 10px 25px; font-size: 14px; color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); letter-spacing: 1px; }
+        .visitor-badge span { color: #d866ff; font-weight: 900; margin-left: 5px; text-shadow: 0 0 8px rgba(216, 102, 255, 0.6); font-size: 15px; }
+        .robot-wrapper { position: absolute; top: 45px; left: 50%; margin-left: -22.5px; width: var(--robot-size); height: var(--robot-size); z-index: 9999; touch-action: none; cursor: grab; opacity: 0; transition: opacity 0.5s; }
+        .robot-mesh { position: relative; width: 100%; height: 100%; animation: robotIdle 3s ease-in-out infinite; }
+        .robot-body { width: 100%; height: 80%; background: linear-gradient(135deg, #2b004a, var(--robot-color)); border-radius: 12px 12px 8px 8px; position: relative; box-shadow: 0 0 15px var(--robot-color); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .eyes-container { display: flex; justify-content: space-between; width: 22px; position: absolute; top: 30%; left: 50%; transform: translateX(-50%); }
+        .robot-eye { width: 6px; height: 6px; background: #00f3ff; border-radius: 50%; box-shadow: 0 0 8px #00f3ff; animation: blink 4s infinite; }
+        .robot-mouth { width: 14px; height: 6px; position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); border-bottom: 2px solid #00f3ff; border-radius: 0 0 10px 10px; }
+        .robot-propeller { width: 60%; height: 4px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -6px; left: 50%; transform: translateX(-50%); border-radius: 2px; animation: spinBlade 0.1s linear infinite; }
+        .light-beam { position: absolute; top: 50%; left: 22px; height: 35px; background: linear-gradient(to right, rgba(0, 243, 255, 0.8), rgba(0, 243, 255, 0)); transform-origin: left center; opacity: 0; pointer-events: none; transition: opacity 0.3s; clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%); z-index: -1; }
+        @keyframes robotIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes spinBlade { 0% { transform: translateX(-50%) rotateY(0deg); } 100% { transform: translateX(-50%) rotateY(360deg); } }
+        @keyframes blink { 0%, 96%, 98% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
     </style>
 </head>
 <body>
-
     <canvas id="rainCanvas"></canvas>
     <div class="lightning" id="flash"></div>
-
+    <img src="ae.png" class="bg-icon bg-ae">
+    <img src="am.png" class="bg-icon bg-am">
     <div id="cyber-robot" class="robot-wrapper">
-        <div class="robot-body">
-            <div class="robot-eye eye-left"></div>
-            <div class="robot-eye eye-right"></div>
+        <div class="robot-mesh">
+            <div class="robot-body">
+                <div class="eyes-container"><div class="robot-eye"></div><div class="robot-eye"></div></div>
+                <div class="robot-mouth"></div>
+            </div>
             <div class="robot-propeller"></div>
             <div id="robot-laser" class="light-beam"></div>
         </div>
     </div>
-
     <div class="container" id="mainContainer">
         <canvas id="innerBouncingCanvas"></canvas>
-        <div class="logo-container"><img src="lg.png" alt="Avatar" class="logo"></div>
-        <div class="title-container"><img src="vr.png" alt="iraqi" class="title-img glitch"></div>
+        <div class="logo-container"><img src="lg.png" class="logo"></div>
+        <div class="title-container"><img src="vr.png" class="title-img glitch"></div>
         <div class="crystal-panel"><span class="crystal-text">اهلاً بالجميع</span></div>
-
         <div class="links-wrapper">
-            <a href="store.html" class="link-btn">🛒 Online Store</a>
-            <a href="https://www.tiktok.com/@lr.y7_" target="_blank" class="link-btn"><img src="tik.png" class="btn-icon"> TikTok</a>
-            <a href="https://t.me/moamdbt" target="_blank" class="link-btn" id="telegram-btn"><img src="tly.png" class="btn-icon"> Telegram</a>
-            
-            <div class="copy-box" onclick="copyLink()">
-                <span id="linkText">https://t.me/mf5rh_777</span>
-                <span>📋</span>
+            <a href="store.html" class="link-btn store-btn">🛒 Online Store</a>
+            <a href="https://www.tiktok.com/@lr.y7_?" target="_blank" class="link-btn"><img src="tik.png" class="btn-icon glow-tiktok"> TikTok</a>
+            <a href="https://t.me/moamdbt" target="_blank" class="link-btn" id="telegram-btn"><img src="tly.png" class="btn-icon glow-telegram"> Telegram</a>
+            <div class="copy-box" onclick="copyTelegramLink()" id="copyBox">
+                <span style="flex: 1; text-align: center; margin-left: 20px;">https://t.me/mf5rh_777</span>
+                <span class="copy-icon">📋</span>
             </div>
-
-            <a href="https://www.instagram.com/lr.7y" target="_blank" class="link-btn"><img src="ins.png" class="btn-icon"> Instagram</a>
+            <a href="https://www.instagram.com/lr.7y?" target="_blank" class="link-btn"><img src="ins.png" class="btn-icon glow-instagram"> Instagram</a>
         </div>
-
         <div class="visitor-badge-container">
             <div class="visitor-badge">👁 Visitors: <span id="vCount">0</span></div>
         </div>
     </div>
 
     <script>
-        function copyLink() {
-            const text = "https://t.me/mf5rh_777";
-            navigator.clipboard.writeText(text).then(() => {
-                const el = document.getElementById('linkText');
-                const old = el.innerText;
-                el.innerText = "تم النسخ! ✅";
-                setTimeout(() => el.innerText = old, 2000);
-            });
-        }
-
-        window.addEventListener('load', () => {
-            // Rain Logic
-            const rain = document.getElementById('rainCanvas');
-            const ctx = rain.getContext('2d');
-            rain.width = window.innerWidth; rain.height = window.innerHeight;
-            rain.style.opacity = 1;
-            const drops = Array.from({length: 40}, () => ({x: Math.random()*rain.width, y: Math.random()*rain.height, v: Math.random()*2+1}));
-            function drawRain() {
-                ctx.clearRect(0,0,rain.width, rain.height);
-                ctx.fillStyle = "rgba(157, 0, 255, 0.2)";
-                drops.forEach(d => {
-                    ctx.fillRect(d.x, d.y, 2, 5);
-                    d.y += d.v; if(d.y > rain.height) d.y = -5;
-                });
-                requestAnimationFrame(drawRain);
-            } drawRain();
-
-            // Visitor Count
-            const countEl = document.getElementById('vCount');
-            let count = localStorage.getItem('visit_count') || 1000;
-            count = parseInt(count) + 1;
-            localStorage.setItem('visit_count', count);
-            countEl.innerText = count.toLocaleString();
-
-            // Robot Animation
-            const robot = document.getElementById('cyber-robot');
-            const laser = document.getElementById('robot-laser');
-            const btn = document.getElementById('telegram-btn');
-            robot.style.opacity = 1;
-
-            setTimeout(() => {
-                const b = btn.getBoundingClientRect();
-                const r = robot.getBoundingClientRect();
-                const dx = b.left - r.left - 40;
-                const dy = b.top - r.top;
-                
-                robot.style.transition = "transform 1.5s ease-in-out";
-                robot.style.transform = `translate(${dx}px, ${dy}px)`;
-
-                setTimeout(() => {
-                    laser.style.opacity = 1; laser.style.width = "100px";
-                    btn.classList.add('btn-blue-reaction');
-                    setTimeout(() => {
-                        laser.style.opacity = 0; btn.classList.remove('btn-blue-reaction');
-                        robot.style.transform = "translate(0,0)";
-                    }, 1000);
-                }, 1600);
-            }, 1000);
-        });
+        (function() {
+            var _0x4f2a = ["\x65\x76\x61\x6C", "\x61\x74\x6F\x62"];
+            var _0x22a = "dmFyIF9vcz1bImNvbnRleHRtZW51IiwicHJldmVudERlZmF1bHQiLCJhZGRFdmVudExpc3RlbmVyIiwibG9hZCIsInJhaW5DYW52YXMiLCJnZXRFbGVtZW50QnlJZCIsIm9wYWNpdHkiLCJzdHlsZSIsIjJkIiwiZ2V0Q29udGV4dCIsImlubmVyV2lkdGgiLCJ3aWR0aCIsImlubmVySGVpZ2h0IiwiaGVpZ2h0IiwicmFuZG9tIiwicHVzaCIsImNsZWFyUmVjdCIsImZpbGxTdHlsZSIsImJlZ2luUGF0aCIsImFyYyIsImZpbGwiLCJyZXF1ZXN0QW5pbWF0aW9uRnJhbWUiLCJpbm5lckJvdW5jaW5nQ2FudmFzIiwibWFpbkNvbnRhaW5lciIsIm9mZnNldVdpZHRoIiwib2Zmc2V0SGVpZ2h0IiwidkNvdW50IiwiaXJhcWlfb2ZmaWNpYWxfcGFnZSIsInRvdGFsX3Zpc2l0cyIsImh0dHBzOi8vYXBpLmNvdW50ZXJhcGkuZGV2L3YxLyIsIi91cCIsImpzb24iLCJ0b0xvY2FsZVN0cmluZyIsImlubmVyVGV4dCIsImN5YmVyLXJvYm90Iiwicm9ib3QtbGFzZXIiLCJ0ZWxlZ3JhbS1idG4iLCJnZXRCb3VuZGluZ0NsaWVudFJlY3QiLCJidG4tYmx1ZS1yZWFjdGlvbiIsImNvcHlCb3giLCJodHRwczovL3QubmUvbWY1cmhfNzc3Iiwid3JpdGVUZXh0IiwiY2xpcGJvYXJkIiwiPHNwYW4gc3R5bGU9XCJjb2xvcjogIzAwZjNmZjsgZm9udC13ZWlnaHQ6IGJvbGQ7IHdpZHRoOiAxMDAlOyB0ZXh0LWFsaWduOiBjZW50ZXI7XCI+Q29waWVkISDwnpyUPC9zcGFuPiIsImlubmVySFRNTCIsImFkZEV2ZW50TGlzdGVuZXIiLCJsb2FkIl07ZG9jdW1lbnRbX29zWzJdXShfb3NbMF0sZnVuY3Rpb24oZSl7ZVtfb3NbMV1dfSk7d2luZG93W19vc1syXV0oX29zWzNdLGZ1bmN0aW9uKCl7c2V0VGltZW91dChmdW5jdGlvbigpe3ZhciBjPWRvY3VtZW50W19vc1s1XV0oX29zWzRdKTtjW19vc1s3XVtfb3NbNl1dPSIxIjt2YXIgY3g9Y1tfb3NbOV1dKF9vc1s4XSk7ZnVuY3Rpb24gcl9zKCl7Y1tfb3NbMTFdXT13aW5kb3dbX29zWzEwXV07Y1tfb3NbMTNdXT13aW5kb3dbX29zWzEyXV19cl9zKCk7dmFyIHBzPVtdO2Zvcih2YXIgaT0wO2k8NDA7aSsrKXtwc1tfb3NbMTVdXSh7eDpNYXRoW19vc1sxNF1dKCkqY1tfb3NbMTFdXSx5Ok1hdGhbX29zWzE0XV0oKSpjW19vc1sxM11dLHM6TWF0aFtfb3NbMTRdXSgpKjIsc3k6TWF0aFtfb3NbMTRdXSgpKjAuNCswLjEsbzpNYXRoW19vc1sxNF1dKCkqMC41KzAuMX0pfWZ1bmN0aW9uIGFuaW0oKXtjeFtfb3NbMTZdXSgwLDAsY1tfb3NbMTFdXSxjW19vc1sxM11dKTtwcy5mb3JFYWNoKGZ1bmN0aW9uKHApe2N4W19vc1sxN11dPSJyZ2JhKDE1NywgMCwgMjU1LCAiK3AubysiKSI7Y3hbX29zWzE4XV0oKTtjeFtfb3NbMTldXShwLngscC55LHAucywwLE1hdGguUEkqMik7Y3hbX29zWzIwXV0oKTtwLnkrcDtweTsgaWYocC55PmNbX29zWzEzXV0pe3AueT0wO3AueD1NYXRoW19vc1sxNF1dKCkqY1tfb3NbMTFdXX19KTt3aW5kb3dbX29zWzIxXV0oYW5pbSl9YW5pbSgpO3ZhciBiYz1kb2N1bWVudFtfb3NbNV1dKF9vc1syMl0pO2JjW19vc1s3XVtfb3NbNl1dPSIxIjt2YXIgYmN4PWJjW19vc1s5XV0oX29zWzhdKTt2YXIgY249ZG93dW1lbnRbX29zWzVdXShfb3NbMjNdKTtmdW5jdGlvbiByX2JjKCl7YmNbX29zWzExXV09Y25bX29zWzI0XV07YmNbX29zWzEzXV09Y25bX29zWzI1XV19cl9iYygpO2ZldGNoKF9vc1syOV0rX29zWzI3XSsiLyIrX29zWzI4XStfb3NbMzBdKS50aGVuKGZ1bmN0aW9uKHIpe3JldHVybiByW19vc1szMV1dKCl9KS50aGVuKGZ1bmN0aW9uKGQpe2lmKGQmJmQuY291bnQpe2RvY3VtZW50W19vc1s1XV0oX29zWzI2XSlbX29zWzMzXV09ZC5jb3VudFtfb3NbMzJdXSgpfX0pO3ZhciByYm90PWRvY3VtZW50W19vc1s1XV0oX29zWzM0XSk7cmJvdFtfb3NbN11dW19vc1s2XV09IjEiO3ZhciBscz1kb2N1bWVudFtfb3VsNV1dKF9vc1szNV0pO3ZhciB0Ym49ZG93dW1lbnRbX29zWzVdXShfb3NbMzZdKTtpZih0Ym4pe3NldFRpbWVvdXQoZnVuY3Rpb24oKXt2YXIgdHI9dGJuW19vc1szN11dKCk7dmFyIHJyPXJib3RbX29zWzM3XV0oKTt2YXIgeD10ci5sZWZ0LXJyLmxlZnQtODA7dmFyIHk9dHIudG9wLXJyLnRvcCsxMDtyYm90W19vc1s3XV0udHJhbnNpdGlvbj0idHJhbnNmb3JtIDEuNXMgZWFzZS1pbi1vdXQiO3Jib3RbX29zWzdfXS50cmFuc2Zvcm09InRyYW5zbGF0ZSgiK3grInB4LCAiK3krInB4KSI7c2V0VGltZW91dChmdW5jdGlvbigpe3ZhciBucl9yPXJib3RbX29zWzM3XV0oKTt2YXIgbng9dHIubGVmdC0obnJfci5sZWZ0KzQ1KTt2YXIgbnk9dHIudG9wK3RyLmhlaWdodC8yLShucl9yLnRvcCsyMik7dmFyIGQ9TWF0aC5zcXJ0KG54Km54K255Km55KTt2YXIgYT1NYXRoLmF0YW4yKG55LG54KSoxODAvTWF0aC5QSTtsc1tfb3NbN11dW19vc1sxMV1dPWQrInB4Ijtsc1tfb3NbN11dLnRyYW5zZm9ybT0icm90YXRlKCIrYSsiZGVnKSI7bHNbX29zWzdfXVtfb3NbNl1dPSIxIjt0Ym4uY2xhc3NMaXN0LmFkZChfb3NbMzhdKTtzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7bHNbX29zWzdfXVtfb3NbNl1dPSIwIjt0Ym4uY2xhc3NMaXN0LnJlbW92ZShfb3NbMzhdKTtyYm90W19vc1s3XV0udHJhbnNmb3JtPSJ0cmFuc2xhdGUoMHB4LCAwcHgpIn0sMjAwMCl9LDE1MDApfSwxMDAwKX19LDMwMCl9KX0pY29weVRlbGVncmFtTGluaz1mdW5jdGlvbigpe3ZhciBjYj1kb2N1bWVudFtfb3NbNV1dKF9vc1szOV0pO3ZhciBvPXNiW19vc1s0NF1dO25hdmlnYXRvcltfb3NbNDJdXVtfb3NbNDFdXShfb3NbNDBdKS50aGVuKGZ1bmN0aW9uKCl7Y2JbX29zWzQ0XV09X29zWzQzXTtzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7Y2JbX29zWzQ0XV09b30sMjAwMCl9KX0=";
+            window[_0x4f2a[0]](window[_0x4f2a[1]](_0x22a));
+        })();
     </script>
 </body>
 </html>
