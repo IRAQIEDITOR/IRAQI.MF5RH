@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -104,6 +104,92 @@
         .crystal-panel { animation-delay: 0.3s; }
         .link-btn:nth-child(1) { animation-delay: 0.4s; } 
         .link-btn:nth-child(2) { animation-delay: 0.5s; } 
+        .link-btn:nth-child(3) { animation-delay: 0.6s; } 
+        .copy-box { animation-delay: 0.65s; } 
+        .link-btn:nth-child(5) { animation-delay: 0.7s; } 
+        .visitor-badge-container { animation-delay: 0.8s; }
+
+        /* --- 5. Logo & Title --- */
+        .logo-container {
+            width: 140px; height: 140px; margin: 0 auto 15px; border-radius: 50%; padding: 4px;
+            background: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple);
+        }
+        .logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #05000a; }
+
+        .title-container { margin: 15px auto 5px; }
+        .title-img { width: 85%; max-width: 250px; display: block; margin: 0 auto; filter: drop-shadow(0 0 25px rgba(157, 0, 255, 0.9)); }
+        .glitch { animation: glitch 5s infinite; } 
+        @keyframes glitch { 0%, 92%, 100% { transform: translate(0); } 94% { transform: translate(2px, -2px); } 96% { transform: translate(-2px, 2px); } }
+
+        /* --- 6. Crystal Panel --- */
+        .crystal-panel {
+            margin: 5px auto 30px; padding: 12px 25px; background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 12px; overflow: hidden; display: inline-block; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .crystal-text {
+            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, #9aa0a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8)); position: relative; z-index: 2;
+        }
+
+        /* --- 7. Buttons --- */
+        .links-wrapper { display: flex; flex-direction: column; gap: 15px; }
+        .link-btn {
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: #fff; background: rgba(0, 0, 0, 0.5);
+            padding: 18px; border-radius: 15px; font-size: 17px; font-weight: 700;
+            border: 1px solid rgba(157, 0, 255, 0.3); transition: all 0.2s ease;
+        }
+        .link-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #b400ff, 0 0 30px #7a00ff; border-color: var(--neon-purple); }
+
+        .store-btn { background: linear-gradient(90deg, #4a00e0, #8e2de2); box-shadow: 0 0 15px rgba(157, 0, 255, 0.3); }
+        .btn-icon { width: 44px; height: 44px; margin-right: 12px; object-fit: contain; pointer-events: none;}
+        .btn-icon-telegram { transform: scale(1.3); }
+        .btn-icon-instagram { transform: scale(1.10); } 
+        
+        .glow-tiktok { filter: drop-shadow(0 0 8px rgba(220, 220, 220, 0.9)); }
+        .glow-telegram { filter: drop-shadow(0 0 8px #00f3ff); }
+        .glow-instagram { filter: drop-shadow(0 0 8px #ff007f); }
+
+        .btn-blue-reaction { background: rgba(0, 243, 255, 0.2) !important; box-shadow: 0 0 20px #00f3ff, 0 0 40px #00f3ff !important; border-color: #00f3ff !important; transform: scale(1.05) !important; }
+
+        /* --- صندوق النسخ الجديد المطور --- */
+        .copy-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px; 
+            margin-top: -8px; 
+            margin-bottom: 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px; 
+            font-weight: 700; 
+            color: rgba(255, 255, 255, 0.7); 
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .copy-box:hover {
+            background: rgba(0, 243, 255, 0.1);
+            color: #00f3ff;
+            border-color: #00f3ff;
+            transform: scale(1.02);
+        }
+        .copy-icon { font-size: 18px; filter: grayscale(100%); transition: 0.3s; }
+        .copy-box:hover .copy-icon { filter: grayscale(0%); }
+
+        /* --- 8. Visitor Badge --- */
+        .visitor-badge-container { margin-top: 35px; display: flex; justify-content: center; }
+        .visitor-badge { display: inline-flex; align-items: center; padding: 10px 25px; font-size: 14px; color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); letter-spacing: 1px; }
+        .visitor-badge span { color: #d866ff; font-weight: 900; margin-left: 5px; text-shadow: 0 0 8px rgba(216, 102, 255, 0.6); font-size: 15px; }
+
+        /* --- 9. Cyber Robot --- */
+        .robot-wrapper { position: absolute; top: 45px; left: 50%; margin-left: -22.5px; width: var(--robot-size); height: var(--robot-size); z-index: 9999; touch-action: none; cursor: grab; opacity: 0; transition: opacity 0.5s; }
+        .robot-wrapper:active { cursor: grabbing; }
+        .robot-mesh { position: relative; width: 100%; height: 100%; animation: robotIdle 3s ease-in-out infinite; }
+        .robot-body { width: 100%; height: 80%; background: linear-gradient(135deg, #2b004a, var(--robot-color)); border-radius: 12px 12px 8px 8px; position: relative; box-shadow: 0 0 15px var(--robot-color); border: 1px solid rgba(255, 255, 255, 0.3); }  .link-btn:nth-child(2) { animation-delay: 0.5s; } 
         .link-btn:nth-child(3) { animation-delay: 0.6s; } 
         .copy-box { animation-delay: 0.65s; } 
         .link-btn:nth-child(5) { animation-delay: 0.7s; } 
