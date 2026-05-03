@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عراقي | Pro Hub</title>
+    <title>VORTX | Pro Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
@@ -34,9 +34,10 @@
             font-family: 'Tajawal', sans-serif;
             user-select: none;
             -webkit-user-select: none;
+            transform: translateZ(0);
         }
 
-        /* Background Effects */
+        /* --- 1. Background Effects --- */
         #rainCanvas {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
@@ -44,151 +45,247 @@
             opacity: 0; transition: opacity 1s ease-in; 
         }
 
-        /* Corner Icons */
+        .lightning {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(200, 0, 255, 0.15); opacity: 0;
+            pointer-events: none; z-index: 9998; transition: opacity 0.1s;
+        }
+
+        /* --- 2. Corner Icons --- */
         .bg-icon {
             position: absolute; z-index: 150; width: 120px; pointer-events: none; opacity: 0; 
+            will-change: transform, opacity;
         }
-        .bg-ae { top: 20px; right: 20px; filter: drop-shadow(0 0 25px var(--neon-purple)); animation: fadeInIcon 0.5s forwards 0.2s, float 6s infinite 0.5s; }
-        .bg-am { bottom: 85px; left: 20px; border-radius: 50%; filter: drop-shadow(0 0 25px var(--neon-green-dark)); animation: fadeInIcon 0.5s forwards 0.2s, float-rev 7s infinite 0.5s; }
+        .bg-ae { 
+            top: 20px; right: 20px; filter: drop-shadow(0 0 25px var(--neon-purple)); 
+            animation: fadeInIcon 0.5s ease forwards 0.2s, float 6s infinite 0.5s;
+        }
+        .bg-am { 
+            bottom: 85px; left: 20px; border-radius: 50%; filter: drop-shadow(0 0 25px var(--neon-green-dark)); 
+            animation: fadeInIcon 0.5s ease forwards 0.2s, float-rev 7s infinite 0.5s;
+        }
         
         @keyframes fadeInIcon { to { opacity: 1; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes float-rev { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(15px); } }
 
-        /* Container */
+        /* --- 3. Main Glass Container --- */
         .container {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(15, 0, 25, 0.4) 100%);
-            backdrop-filter: blur(8px); border: 1px solid rgba(157, 0, 255, 0.2); border-radius: 30px; 
-            padding: 50px 30px; width: 100%; max-width: 440px; text-align: center;
-            position: relative; z-index: 100; opacity: 0; transform: scale(0.95);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(157, 0, 255, 0.2); border-radius: 30px; padding: 50px 30px;
+            width: 100%; max-width: 440px; text-align: center;
+            position: relative; z-index: 100;
+            box-shadow: 0 0 40px rgba(157, 0, 255, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.02);
+            overflow: hidden; margin: 0 auto; 
+            opacity: 0; transform: scale(0.95);
+            will-change: transform, opacity;
             animation: containerReveal 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
         @keyframes containerReveal { to { opacity: 1; transform: scale(1); } }
 
-        #innerBouncingCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        #innerBouncingCanvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+            opacity: 0; transition: opacity 1s ease-in;
+        }
 
-        /* Logo & Titles */
-        .logo-container { width: 140px; height: 140px; margin: 0 auto 15px; border-radius: 50%; background: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple); padding: 4px; }
+        /* --- 4. Entrance Animations --- */
+        .logo-container, .title-container, .crystal-panel, .link-btn, .visitor-badge-container, .copy-box { 
+            position: relative; z-index: 10; opacity: 0; 
+            animation: fadeInUpBlur 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes fadeInUpBlur {
+            0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        .logo-container { animation-delay: 0.1s; }
+        .title-container { animation-delay: 0.2s; }
+        .crystal-panel { animation-delay: 0.3s; }
+        .link-btn:nth-child(1) { animation-delay: 0.4s; } 
+        .link-btn:nth-child(2) { animation-delay: 0.5s; } 
+        .link-btn:nth-child(3) { animation-delay: 0.6s; } 
+        .copy-box { animation-delay: 0.65s; } 
+        .link-btn:nth-child(5) { animation-delay: 0.7s; } 
+        .visitor-badge-container { animation-delay: 0.8s; }
+
+        /* --- 5. Logo & Title --- */
+        .logo-container {
+            width: 140px; height: 140px; margin: 0 auto 15px; border-radius: 50%; padding: 4px;
+            background: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple);
+        }
         .logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #05000a; }
-        .title-img { width: 85%; max-width: 250px; margin: 0 auto; filter: drop-shadow(0 0 25px var(--neon-purple)); }
 
-        .crystal-panel { margin: 10px auto 30px; padding: 10px 25px; background: rgba(255,255,255,0.05); border-radius: 12px; display: inline-block; }
-        .crystal-text { font-family: 'Montserrat'; font-weight: 900; letter-spacing: 1px; color: #fff; }
+        .title-container { margin: 15px auto 5px; }
+        .title-img { width: 85%; max-width: 250px; display: block; margin: 0 auto; filter: drop-shadow(0 0 25px rgba(157, 0, 255, 0.9)); }
+        .glitch { animation: glitch 5s infinite; } 
+        @keyframes glitch { 0%, 92%, 100% { transform: translate(0); } 94% { transform: translate(2px, -2px); } 96% { transform: translate(-2px, 2px); } }
 
-        /* Buttons */
+        .crystal-panel {
+            margin: 5px auto 30px; padding: 12px 25px; background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px); border-radius: 12px; display: inline-block; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .crystal-text {
+            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, #9aa0a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
         .links-wrapper { display: flex; flex-direction: column; gap: 15px; }
         .link-btn {
             display: flex; align-items: center; justify-content: center;
             text-decoration: none; color: #fff; background: rgba(0, 0, 0, 0.5);
-            padding: 18px; border-radius: 15px; font-weight: 700;
-            border: 1px solid rgba(157, 0, 255, 0.3); transition: 0.3s;
+            padding: 18px; border-radius: 15px; font-size: 17px; font-weight: 700;
+            border: 1px solid rgba(157, 0, 255, 0.3); transition: all 0.2s ease;
         }
-        .link-btn:hover { transform: scale(1.03); border-color: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
+        .link-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #b400ff, 0 0 30px #7a00ff; border-color: var(--neon-purple); }
+
         .store-btn { background: linear-gradient(90deg, #4a00e0, #8e2de2); }
-        .btn-icon { width: 30px; height: 30px; margin-left: 10px; }
+        .btn-icon { width: 44px; height: 44px; margin-right: 12px; object-fit: contain; pointer-events: none;}
 
-        /* Copy Box */
+        .btn-blue-reaction { background: rgba(0, 243, 255, 0.2) !important; box-shadow: 0 0 20px #00f3ff, 0 0 40px #00f3ff !important; border-color: #00f3ff !important; transform: scale(1.05) !important; }
+
         .copy-box {
-            background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--neon-blue);
-            border-radius: 10px; padding: 15px; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; transition: 0.3s; font-size: 14px;
+            background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 10px; padding: 15px 20px; margin-top: -8px; 
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 16px; font-weight: 700; color: rgba(255, 255, 255, 0.7); 
+            cursor: pointer; transition: all 0.3s ease;
         }
-        .copy-box:hover { background: rgba(0, 243, 255, 0.1); color: var(--neon-blue); }
+        .copy-box:hover { background: rgba(0, 243, 255, 0.1); color: #00f3ff; border-color: #00f3ff; }
 
-        /* Robot */
-        .robot-wrapper { position: absolute; top: 45px; left: 50%; transform: translateX(-50%); width: var(--robot-size); height: var(--robot-size); z-index: 9999; opacity: 0; transition: 0.5s; }
-        .robot-body { width: 100%; height: 80%; background: var(--robot-color); border-radius: 10px; position: relative; box-shadow: 0 0 15px var(--robot-color); }
-        .robot-eye { width: 6px; height: 6px; background: var(--neon-blue); border-radius: 50%; position: absolute; top: 30%; }
-        .eye-l { left: 20%; } .eye-r { right: 20%; }
-        .visitor-badge { margin-top: 25px; padding: 8px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
-        #vCount { color: #d866ff; font-weight: bold; }
+        .visitor-badge { display: inline-flex; align-items: center; padding: 10px 25px; font-size: 14px; color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.15); }
+        .visitor-badge span { color: #d866ff; font-weight: 900; margin-left: 5px; }
+
+        /* --- Robot Styling --- */
+        .robot-wrapper { position: absolute; top: 45px; left: 50%; margin-left: -22.5px; width: var(--robot-size); height: var(--robot-size); z-index: 9999; opacity: 0; transition: opacity 0.5s; cursor: grab; }
+        .robot-mesh { position: relative; width: 100%; height: 100%; animation: robotIdle 3s ease-in-out infinite; }
+        .robot-body { width: 100%; height: 80%; background: linear-gradient(135deg, #2b004a, var(--robot-color)); border-radius: 12px; position: relative; box-shadow: 0 0 15px var(--robot-color); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .robot-eye { width: 6px; height: 6px; background: #00f3ff; border-radius: 50%; position: absolute; top: 30%; }
+        .eye-l { left: 25%; } .eye-r { right: 25%; }
+        .robot-propeller { width: 60%; height: 4px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -6px; left: 50%; transform: translateX(-50%); border-radius: 2px; animation: spinBlade 0.1s linear infinite; }
+        .light-beam { position: absolute; top: 50%; left: 22px; height: 35px; background: linear-gradient(to right, rgba(0, 243, 255, 0.8), rgba(0, 243, 255, 0)); transform-origin: left center; opacity: 0; pointer-events: none; transition: opacity 0.3s; clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%); z-index: -1; }
+        @keyframes robotIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes spinBlade { 0% { transform: translateX(-50%) rotateY(0deg); } 100% { transform: translateX(-50%) rotateY(360deg); } }
     </style>
 </head>
 <body>
 
     <canvas id="rainCanvas"></canvas>
+    <div class="lightning" id="flash"></div>
 
     <img src="ae.png" alt="AE" class="bg-icon bg-ae">
     <img src="am.png" alt="AM" class="bg-icon bg-am">
 
     <div id="cyber-robot" class="robot-wrapper">
-        <div class="robot-body">
-            <div class="robot-eye eye-l"></div>
-            <div class="robot-eye eye-r"></div>
+        <div class="robot-mesh">
+            <div class="robot-body">
+                <div class="robot-eye eye-l"></div>
+                <div class="robot-eye eye-r"></div>
+            </div>
+            <div class="robot-propeller"></div>
+            <div id="robot-laser" class="light-beam"></div>
         </div>
     </div>
 
     <div class="container" id="mainContainer">
         <canvas id="innerBouncingCanvas"></canvas>
-
         <div class="logo-container"><img src="lg.png" alt="Avatar" class="logo"></div>
-        
         <div class="title-container">
-            <img src="vr.png" alt="iraqi" class="title-img">
+            <img src="vr.png" alt="VORTX" class="title-img glitch">
         </div>
-        
-        <div class="crystal-panel"><span class="crystal-text">WELCOME TO PRO HUB</span></div>
-
+        <div class="crystal-panel"><span class="crystal-text">Master Your Motion</span></div>
         <div class="links-wrapper">
-            <a href="store.html" class="link-btn store-btn">🛒 المتجر الإلكتروني</a>
-            <a href="https://www.tiktok.com/@lr.y7_" target="_blank" class="link-btn"><img src="tik.png" class="btn-icon"> تيك توك</a>
-            <a href="https://t.me/moamdbt" target="_blank" class="link-btn"><img src="tly.png" class="btn-icon"> تليجرام الأساسي</a>
-            
-            <div class="copy-box" onclick="copyText('https://t.me/mf5rh_777')" id="copyBox">
-                <span>https://t.me/mf5rh_777</span>
-                <span>📋 نسخ</span>
+            <a href="store.html" class="link-btn store-btn">🛒 Online Store</a>
+            <a href="https://www.tiktok.com/@ortr.1" target="_blank" class="link-btn"><img src="tik.png" class="btn-icon"> TikTok</a>
+            <a href="https://t.me/v_ortx" target="_blank" class="link-btn" id="telegram-btn"><img src="tly.png" class="btn-icon"> Telegram</a>
+            <div class="copy-box" onclick="copyTelegramLink()" id="copyBox">
+                <span id="copyTxt">https://t.me/v_ortx</span>
+                <span class="copy-icon">📋</span>
             </div>
-
-            <a href="https://www.instagram.com/lr.7y" target="_blank" class="link-btn"><img src="ins.png" class="btn-icon"> انستقرام</a>
+            <a href="https://www.instagram.com/toix.8i" target="_blank" class="link-btn"><img src="ins.png" class="btn-icon"> Instagram</a>
         </div>
-
-        <div class="visitor-badge">👁 الزوار: <span id="vCount">جاري التحميل...</span></div>
+        <div class="visitor-badge-container">
+            <div class="visitor-badge">👁 Visitors: <span id="vCount">0</span></div>
+        </div>
     </div>
 
     <script>
-        // دالة النسخ المصلحة
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
+        // 1. النسخ مع التأثير
+        function copyTelegramLink() {
+            const link = "https://t.me/v_ortx";
+            navigator.clipboard.writeText(link).then(() => {
+                const txt = document.getElementById('copyTxt');
                 const box = document.getElementById('copyBox');
-                const oldContent = box.innerHTML;
-                box.innerHTML = "<span style='color:#00f3ff; width:100%; text-align:center;'>تم النسخ بنجاح! ✅</span>";
-                setTimeout(() => { box.innerHTML = oldContent; }, 2000);
+                txt.innerText = "Copied! ✔️";
+                box.style.borderColor = "#00f3ff";
+                setTimeout(() => {
+                    txt.innerText = link;
+                    box.style.borderColor = "";
+                }, 2000);
             });
         }
 
         window.addEventListener('load', () => {
-            // تأثير المطر
-            const canvas = document.getElementById('rainCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.style.opacity = 1;
-            let w, h;
-            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-            resize();
-            const particles = Array.from({length: 50}, () => ({ x: Math.random()*w, y: Math.random()*h, s: Math.random()*2, v: Math.random()*2 + 1 }));
-            function draw() {
-                ctx.clearRect(0,0,w,h);
-                ctx.fillStyle = "rgba(157, 0, 255, 0.5)";
-                particles.forEach(p => {
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
-                    p.y += p.v; if(p.y > h) p.y = -10;
-                });
-                requestAnimationFrame(draw);
+            // 2. المطر والخطوط
+            const rainCanvas = document.getElementById('rainCanvas');
+            const ctxRain = rainCanvas.getContext('2d');
+            const innerCanvas = document.getElementById('innerBouncingCanvas');
+            const ctxInner = innerCanvas.getContext('2d');
+            const container = document.getElementById('mainContainer');
+
+            function resize() {
+                rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight;
+                innerCanvas.width = container.offsetWidth; innerCanvas.height = container.offsetHeight;
             }
-            draw();
+            window.addEventListener('resize', resize);
+            resize(); rainCanvas.style.opacity = "1"; innerCanvas.style.opacity = "1";
 
-            // عداد الزوار (إصلاح باستخدام API بديل ومستقر)
+            const rain = Array.from({length: 40}, () => ({x: Math.random()*innerWidth, y: Math.random()*innerHeight, s: Math.random()*2, v: Math.random()*0.5+0.1}));
+            function anim() {
+                ctxRain.clearRect(0,0,rainCanvas.width, rainCanvas.height);
+                ctxRain.fillStyle = "rgba(157, 0, 255, 0.3)";
+                rain.forEach(p => {
+                    ctxRain.beginPath(); ctxRain.arc(p.x, p.y, p.s, 0, Math.PI*2); ctxRain.fill();
+                    p.y += p.v; if(p.y > rainCanvas.height) p.y = 0;
+                });
+                requestAnimationFrame(anim);
+            } anim();
+
+            // 3. عداد الزوار (ثابت)
             const vCount = document.getElementById('vCount');
-            // ملاحظة: هذا الـ API يعمل تلقائياً عند الزيارة
-            fetch('https://api.countapi.xyz/hit/iraqi_official_pro/visits')
-            .then(res => res.json())
-            .then(data => { vCount.innerText = data.value.toLocaleString(); })
-            .catch(() => { vCount.innerText = Math.floor(Math.random() * 5000) + 1200; });
+            let visits = localStorage.getItem('v_count') || 1000;
+            visits = parseInt(visits) + 1;
+            localStorage.setItem('v_count', visits);
+            vCount.innerText = visits.toLocaleString();
 
-            // إظهار الروبوت
-            document.getElementById('cyber-robot').style.opacity = 1;
+            // 4. منطق الروبوت والليزر
+            const robot = document.getElementById('cyber-robot');
+            const laser = document.getElementById('robot-laser');
+            const teleBtn = document.getElementById('telegram-btn');
+            robot.style.opacity = "1";
+
+            setTimeout(() => {
+                const target = teleBtn.getBoundingClientRect();
+                const start = robot.getBoundingClientRect();
+                const mx = target.left - start.left - 50;
+                const my = target.top - start.top + 10;
+                
+                robot.style.transition = "transform 1.5s ease-in-out";
+                robot.style.transform = `translate(${mx}px, ${my}px)`;
+
+                setTimeout(() => {
+                    laser.style.opacity = "1";
+                    laser.style.width = "150px";
+                    teleBtn.classList.add('btn-blue-reaction');
+                    setTimeout(() => {
+                        laser.style.opacity = "0";
+                        teleBtn.classList.remove('btn-blue-reaction');
+                        robot.style.transform = "translate(0,0)";
+                    }, 1000);
+                }, 1600);
+            }, 1000);
         });
 
-        // منع القائمة اليمنى
         document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
