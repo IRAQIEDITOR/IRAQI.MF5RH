@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -342,8 +342,9 @@
                     robot.style.transition = 'transform 1.5s ease-in-out';
                     robot.style.transform = `translate(${moveX}px, ${moveY}px)`;
                     xOffset = moveX; yOffset = moveY;
-                    
-                    setTimeout(() => {
-                        const currentRect = robot.getBoundingClientRect();
-                        const dx = targetRect.left - (currentRect.left + 45); 
-        
+                }, 1000);
+            }, 100);
+        });
+    </script>
+</body>
+</html>
