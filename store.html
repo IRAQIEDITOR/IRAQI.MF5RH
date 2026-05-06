@@ -1,530 +1,707 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>عــراقــي | PRO HUB - الصدمة القصوى</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>عــراقــي PRO HUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-tap-highlight-color:transparent}
 
-        :root {
-            --shock-purple: #9b30ff;
-            --shock-gold: #ffcc44;
-            --shock-dark: #0a0a0f;
-            --shock-blood: #ff0033;
-            --shock-glow: rgba(155, 48, 255, 0.8);
-            --robot-size: 58px;
-        }
+:root{
+  --g:#ffcc44;
+  --p:#9b30ff;
+  --r:#ff0033;
+  --bg:#03000a;
+  --card:rgba(5,0,15,0.85);
+}
 
-        body {
-            background: radial-gradient(circle at 20% 30%, #030003 0%, #000000 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
-            font-family: 'Tajawal', sans-serif;
-            position: relative;
-            overflow-x: hidden;
-        }
+html,body{height:100%;overflow-x:hidden}
 
-        /* === تأثير الخلفية المدمرة === */
-        .destructive-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(155,48,255,0.08) 0px, rgba(155,48,255,0.08) 2px, transparent 2px, transparent 8px);
-            pointer-events: none;
-            z-index: 5;
-        }
+body{
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:40px 16px 60px;
+  font-family:'Tajawal',sans-serif;
+  cursor:none;
+}
 
-        canvas#shockWaveCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 3;
-            pointer-events: none;
-            opacity: 0.6;
-        }
+/* ===== CURSOR ===== */
+#cursor{
+  position:fixed;width:14px;height:14px;
+  background:var(--g);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 20px var(--g),0 0 40px var(--g);
+  transition:width .15s,height .15s,background .15s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:38px;height:38px;
+  border:2px solid rgba(155,48,255,.7);
+  border-radius:50%;pointer-events:none;
+  z-index:99998;transform:translate(-50%,-50%);
+  transition:transform .08s,width .2s,height .2s,opacity .2s;
+}
 
-        /* فلاش صاعق */
-        .shock-flash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,204,68,0.6) 0%, rgba(155,48,255,0.9) 100%);
-            pointer-events: none;
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.05s linear;
-        }
+/* ===== BACKGROUND LAYERS ===== */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-        /* === أيقونات ذهبية متحركة === */
-        .corner-skull {
-            position: absolute;
-            z-index: 20;
-            width: 110px;
-            opacity: 0;
-            filter: drop-shadow(0 0 20px var(--shock-gold));
-            animation: fadeSkull 1s ease forwards, skullFloat 5s infinite alternate;
-        }
-        .skull-left {
-            bottom: 20px;
-            left: 10px;
-            animation-delay: 0.3s;
-        }
-        .skull-right {
-            top: 20px;
-            right: 10px;
-            transform: scaleX(-1);
-            animation-delay: 0.6s;
-        }
-        @keyframes fadeSkull { to { opacity: 0.45; } }
-        @keyframes skullFloat { 0% { transform: translateY(0px) rotate(0deg); } 100% { transform: translateY(-18px) rotate(5deg); } }
+.scanlines{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(155,48,255,.04) 3px,rgba(155,48,255,.04) 4px);
+}
 
-        /* === الحاوية الثورية === */
-        .apocalypse-card {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(16px) saturate(180%);
-            border-radius: 48px;
-            border: 2px solid;
-            border-image: linear-gradient(135deg, var(--shock-gold), var(--shock-purple)) 1;
-            max-width: 500px;
-            width: 100%;
-            padding: 35px 28px 45px;
-            position: relative;
-            z-index: 100;
-            box-shadow: 0 0 60px rgba(155, 48, 255, 0.5), inset 0 0 15px rgba(255, 204, 68, 0.2);
-            transform: scale(0.96) translateY(30px);
-            opacity: 0;
-            animation: brutalReveal 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
-        }
+.vignette{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.85) 100%);
+}
 
-        @keyframes brutalReveal {
-            0% { opacity: 0; transform: scale(0.85) translateY(60px); filter: blur(8px);}
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0);}
-        }
+/* ===== FLOATING ORBS ===== */
+.orb{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(80px);opacity:.35;animation:orbFloat 12s ease-in-out infinite;
+}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,var(--p),transparent 70%);top:-100px;left:-150px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,#ff6600,transparent 70%);bottom:-80px;right:-100px;animation-delay:-5s}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,var(--g),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-9s}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-40px) scale(1.1)}
+  66%{transform:translate(-20px,25px) scale(0.9)}
+}
 
-        /* هيدر الصدمة */
-        .avatar-shield {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 20px;
-            background: linear-gradient(45deg, var(--shock-gold), var(--shock-purple));
-            border-radius: 50%;
-            padding: 4px;
-            box-shadow: 0 0 40px var(--shock-purple), inset 0 0 10px black;
-            animation: pulseBorder 1.8s infinite alternate;
-        }
-        .avatar-shield img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid black;
-        }
-        @keyframes pulseBorder {
-            0% { box-shadow: 0 0 10px var(--shock-purple); }
-            100% { box-shadow: 0 0 35px var(--shock-gold), 0 0 55px var(--shock-purple); }
-        }
+/* ===== PARTICLES ===== */
+.spark{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:3;
+  animation:sparkRise linear infinite;
+}
+@keyframes sparkRise{
+  0%{transform:translateY(0) scale(1) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:.5}
+  100%{transform:translateY(-100vh) scale(0) rotate(360deg);opacity:0}
+}
 
-        .title-wrath {
-            text-align: center;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-        .title-wrath img {
-            width: 80%;
-            max-width: 280px;
-            filter: drop-shadow(0 0 18px var(--shock-gold)) drop-shadow(0 0 35px var(--shock-purple));
-            animation: glitchRage 2.2s infinite;
-        }
-        @keyframes glitchRage {
-            0%, 100% { transform: skew(0deg, 0deg); opacity: 1; text-shadow: none;}
-            95% { transform: skew(2deg, 1deg); filter: drop-shadow(0 0 5px red);}
-            97% { transform: skew(-2deg, -1deg); filter: drop-shadow(0 0 12px var(--shock-blood));}
-        }
+/* ===== SHOCKWAVE CANVAS ===== */
+#shock-canvas{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.7}
 
-        .crystal-doom {
-            background: rgba(155, 48, 255, 0.2);
-            border: 1px solid rgba(255, 204, 68, 0.6);
-            border-radius: 60px;
-            padding: 12px 20px;
-            margin: 18px auto 25px;
-            width: fit-content;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 0 30px rgba(255, 51, 0, 0.3);
-        }
-        .crystal-doom span {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 18px;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #ffdd88, #ffaa22, #ff44cc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 6px purple;
-        }
+/* ===== FLASH ===== */
+#flash{
+  position:fixed;inset:0;z-index:10000;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,204,68,.5),rgba(155,48,255,.8));
+  opacity:0;
+}
 
-        /* أزرار صادمة */
-        .btn-warp {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1.5px solid;
-            border-color: var(--shock-gold);
-            border-radius: 50px;
-            padding: 16px 20px;
-            margin-bottom: 18px;
-            font-weight: 800;
-            font-size: 18px;
-            color: white;
-            transition: all 0.2s cubic-bezier(0.2, 1.8, 0.4, 1);
-            position: relative;
-            overflow: hidden;
-            gap: 15px;
-        }
-        .btn-warp::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,204,68,0.3), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
-        }
-        .btn-warp:hover::before { left: 100%; }
-        .btn-warp:hover {
-            transform: scale(1.07);
-            border-color: var(--shock-purple);
-            box-shadow: 0 0 28px var(--shock-purple), 0 0 18px var(--shock-gold);
-            background: rgba(155, 48, 255, 0.3);
-        }
-        .btn-icon {
-            width: 38px;
-            height: 38px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 6px currentColor);
-        }
-        .btn-store {
-            background: linear-gradient(90deg, #5e1570, #a032ff);
-            border-color: #ffcc44;
-            box-shadow: 0 0 20px #a032ff;
-        }
+/* ===== MAIN CARD ===== */
+.card{
+  position:relative;z-index:100;
+  max-width:480px;width:100%;
+  background:var(--card);
+  backdrop-filter:blur(24px) saturate(200%);
+  border-radius:40px;
+  border:1.5px solid rgba(255,204,68,.3);
+  padding:40px 28px 50px;
+  box-shadow:
+    0 0 0 1px rgba(155,48,255,.2),
+    0 0 60px rgba(155,48,255,.3),
+    0 0 120px rgba(155,48,255,.1),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 0 40px rgba(155,48,255,.05);
+  opacity:0;
+  transform:translateY(50px) scale(.94);
+  animation:cardIn .7s cubic-bezier(.34,1.4,.64,1) .2s forwards;
+}
+@keyframes cardIn{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
 
-        /* كوبي مدمّر */
-        .copy-destroy {
-            background: rgba(255, 204, 68, 0.1);
-            border: 1px dashed #ffaa33;
-            border-radius: 50px;
-            padding: 14px 18px;
-            margin: 5px 0 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: bold;
-            font-family: monospace;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-        }
-        .copy-destroy:hover {
-            background: #ffcc4422;
-            border: 1px solid var(--shock-gold);
-            transform: scale(1.02);
-            box-shadow: 0 0 15px gold;
-        }
-        .copy-destroy span { color: #ffdd99; }
-        .copy-icon-brutal { font-size: 24px; filter: drop-shadow(0 0 5px orange);}
+/* gold top bar */
+.card::before{
+  content:'';position:absolute;top:0;left:10%;width:80%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--g),var(--p),var(--g),transparent);
+  border-radius:0 0 4px 4px;
+  box-shadow:0 0 20px var(--g);
+}
 
-        /* العداد البصمي */
-        .visitor-nuke {
-            display: flex;
-            justify-content: center;
-            margin-top: 35px;
-            padding: 8px;
-        }
-        .visitor-nuke .badge {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(20px);
-            padding: 8px 30px;
-            border-radius: 80px;
-            border: 1px solid var(--shock-gold);
-            font-size: 16px;
-            font-weight: 800;
-        }
-        .visitor-nuke .badge span {
-            color: var(--shock-gold);
-            font-size: 22px;
-            text-shadow: 0 0 10px #ffcc44;
-            margin-right: 8px;
-        }
+/* ===== AVATAR ===== */
+.avatar-wrap{
+  width:120px;height:120px;margin:0 auto 22px;
+  position:relative;
+}
+.avatar-ring{
+  position:absolute;inset:-6px;border-radius:50%;
+  background:conic-gradient(var(--g),var(--p),#ff6600,var(--g));
+  animation:spinRing 3s linear infinite;
+  filter:blur(1px);
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.avatar-ring-inner{
+  position:absolute;inset:2px;border-radius:50%;
+  background:var(--bg);
+}
+.avatar-img{
+  position:absolute;inset:6px;border-radius:50%;
+  background:linear-gradient(135deg,#2a0a4d,#5e1e8a);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.8);
+}
+.avatar-img img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.avatar-img .fallback{font-size:42px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
-        /* الروبوت المسيّر المدمر */
-        .mech-destroyer {
-            position: fixed;
-            bottom: 35px;
-            right: 25px;
-            width: 70px;
-            height: 70px;
-            z-index: 9999;
-            cursor: grab;
-            opacity: 0;
-            transition: opacity 0.6s, transform 0.2s;
-            filter: drop-shadow(0 0 12px var(--shock-blood));
-            animation: robotStomp 1.2s infinite alternate;
-        }
-        .mech-body {
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30%, #2b0b3a, #5e1e8a);
-            border-radius: 20px 20px 35px 35px;
-            border: 2px solid #ffaa33;
-            position: relative;
-            box-shadow: 0 0 18px #ff0033;
-        }
-        .mech-eyes {
-            display: flex;
-            justify-content: space-between;
-            width: 45px;
-            position: absolute;
-            top: 25%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .mech-eye {
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, #ff4444, #ff0000);
-            border-radius: 50%;
-            box-shadow: 0 0 12px red;
-            animation: eyeBlink 1.8s infinite;
-        }
-        .mech-mouth {
-            width: 28px;
-            height: 8px;
-            background: #000;
-            position: absolute;
-            bottom: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 0px;
-            background: repeating-linear-gradient(90deg, #ffcc44, #ffcc44 4px, #ff6600 4px, #ff6600 8px);
-        }
-        .spike {
-            width: 12px;
-            height: 12px;
-            background: #ffcc44;
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            box-shadow: 0 0 5px orange;
-        }
-        @keyframes robotStomp {
-            0% { transform: translateY(0px) rotate(0deg);}
-            100% { transform: translateY(-12px) rotate(5deg);}
-        }
-        @keyframes eyeBlink {
-            0%, 90% { transform: scaleY(1);}
-            95% { transform: scaleY(0.1);}
-        }
+/* status dot */
+.status-dot{
+  position:absolute;bottom:4px;right:4px;
+  width:18px;height:18px;border-radius:50%;
+  background:#00ff88;border:3px solid var(--bg);
+  box-shadow:0 0 12px #00ff88;
+  animation:statusPulse 1.5s infinite;
+  z-index:5;
+}
+@keyframes statusPulse{
+  0%,100%{box-shadow:0 0 8px #00ff88}
+  50%{box-shadow:0 0 20px #00ff88,0 0 40px #00ff88}
+}
 
-        /* إضافات صادمة: فقاعات بلازما */
-        .plasma-particle {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: #ff00cc;
-            border-radius: 50%;
-            filter: blur(2px);
-            pointer-events: none;
-            z-index: 2;
-            opacity: 0.7;
-            animation: plasmaDrift 7s linear infinite;
-        }
-        @keyframes plasmaDrift {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0;}
-            20% { opacity: 1;}
-            100% { transform: translateY(-20vh) scale(2); opacity: 0;}
-        }
+/* ===== TITLE ===== */
+.name-text{
+  text-align:center;
+  font-family:'Montserrat',sans-serif;
+  font-weight:900;
+  font-size:clamp(26px,7vw,36px);
+  letter-spacing:3px;
+  background:linear-gradient(135deg,#fff 0%,var(--g) 40%,var(--p) 70%,#ff6600 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:none;
+  position:relative;
+  animation:nameGlitch 4s infinite;
+}
+@keyframes nameGlitch{
+  0%,92%,100%{filter:none;transform:none}
+  93%{filter:drop-shadow(-3px 0 var(--r)) drop-shadow(3px 0 #00ffff);transform:skew(-1deg)}
+  95%{filter:drop-shadow(3px 0 var(--r)) drop-shadow(-3px 0 #00ffff);transform:skew(1deg)}
+  97%{filter:none;transform:none}
+}
 
-        /* Responsive */
-        @media (max-width: 500px) {
-            .apocalypse-card { padding: 25px 18px 35px; }
-            .btn-warp { font-size: 15px; padding: 12px 16px; }
-            .mech-destroyer { width: 55px; height: 55px; bottom: 15px; right: 15px; }
-        }
-    </style>
+.sub-title{
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,204,68,.6);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-top:4px;
+  font-weight:700;
+}
+
+/* ===== BADGE ===== */
+.shock-badge{
+  margin:20px auto;
+  width:fit-content;
+  background:linear-gradient(135deg,rgba(155,48,255,.2),rgba(255,102,0,.2));
+  border:1px solid rgba(255,204,68,.4);
+  border-radius:100px;
+  padding:10px 24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(10px);
+}
+.shock-badge::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,204,68,.15),transparent);
+  transform:translateX(-100%);
+  animation:badgeSweep 2.5s ease infinite;
+}
+@keyframes badgeSweep{to{transform:translateX(200%)}}
+.shock-badge span{
+  font-size:16px;font-weight:900;
+  background:linear-gradient(90deg,#ffd700,#ff8800,#ff44cc);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:1px;
+}
+
+/* ===== DIVIDER ===== */
+.divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,204,68,.3),transparent);
+}
+.divider-icon{font-size:18px;opacity:.8}
+
+/* ===== BUTTONS ===== */
+.btn{
+  display:flex;align-items:center;
+  text-decoration:none;
+  border-radius:18px;
+  padding:0;
+  margin-bottom:14px;
+  position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+  border:none;cursor:none;
+}
+.btn:hover{transform:scale(1.04) translateY(-2px)}
+.btn:active{transform:scale(.97)}
+
+.btn-inner{
+  display:flex;align-items:center;width:100%;
+  padding:15px 20px;gap:14px;
+  position:relative;z-index:2;
+}
+
+/* store */
+.btn-store{background:linear-gradient(135deg,#1a0030,#3d0a7a,#6600cc)}
+.btn-store{box-shadow:0 4px 30px rgba(102,0,204,.5),inset 0 1px 0 rgba(255,255,255,.1)}
+.btn-store:hover{box-shadow:0 8px 50px rgba(102,0,204,.8),0 0 30px rgba(255,204,68,.3)}
+
+/* tiktok */
+.btn-tiktok{background:linear-gradient(135deg,#000,#1a1a2e,#16213e)}
+.btn-tiktok{box-shadow:0 4px 20px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
+.btn-tiktok:hover{box-shadow:0 8px 40px rgba(0,242,234,.3),0 0 20px rgba(254,44,85,.3)}
+
+/* telegram */
+.btn-telegram{background:linear-gradient(135deg,#001830,#003d5c,#0088cc)}
+.btn-telegram{box-shadow:0 4px 20px rgba(0,136,204,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+.btn-telegram:hover{box-shadow:0 8px 40px rgba(0,136,204,.6)}
+
+/* instagram */
+.btn-instagram{background:linear-gradient(135deg,#3a0020,#7a0060,#cc0066)}
+.btn-instagram{box-shadow:0 4px 20px rgba(204,0,102,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+.btn-instagram:hover{box-shadow:0 8px 40px rgba(204,0,102,.6)}
+
+/* shimmer on hover */
+.btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.12) 50%,transparent 60%);
+  transform:translateX(-100%);
+  transition:transform .4s ease;
+}
+.btn:hover::after{transform:translateX(100%)}
+
+/* border glow */
+.btn-border{
+  position:absolute;inset:0;border-radius:18px;
+  border:1px solid transparent;
+  background:linear-gradient(#000,#000) padding-box,
+             linear-gradient(135deg,rgba(255,204,68,.5),rgba(155,48,255,.5)) border-box;
+  pointer-events:none;
+  transition:opacity .3s;
+  opacity:.6;
+}
+.btn:hover .btn-border{opacity:1}
+
+.btn-emoji{
+  font-size:28px;flex-shrink:0;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.5));
+  transition:transform .3s;
+}
+.btn:hover .btn-emoji{transform:scale(1.2) rotate(-5deg)}
+
+.btn-label{
+  flex:1;
+  font-weight:900;
+  font-size:17px;
+  color:#fff;
+  text-align:right;
+  line-height:1.2;
+}
+.btn-label small{
+  display:block;
+  font-size:11px;
+  font-weight:400;
+  color:rgba(255,255,255,.5);
+  margin-top:2px;
+  letter-spacing:1px;
+}
+
+.btn-arrow{
+  font-size:20px;color:rgba(255,255,255,.3);
+  transition:transform .3s,color .3s;
+}
+.btn:hover .btn-arrow{transform:translateX(-6px);color:var(--g)}
+
+/* ===== COPY BOX ===== */
+.copy-box{
+  background:rgba(255,204,68,.06);
+  border:1px dashed rgba(255,204,68,.35);
+  border-radius:18px;
+  padding:14px 18px;
+  margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+  cursor:none;
+  transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.copy-box:hover{
+  background:rgba(255,204,68,.1);
+  border-color:var(--g);
+  box-shadow:0 0 20px rgba(255,204,68,.2);
+  transform:scale(1.02);
+}
+.copy-box-text{
+  flex:1;font-family:monospace;font-size:13px;
+  color:rgba(255,220,130,.8);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  direction:ltr;
+}
+.copy-btn-tag{
+  background:rgba(255,204,68,.15);
+  border:1px solid rgba(255,204,68,.4);
+  border-radius:10px;
+  padding:6px 12px;
+  font-size:12px;font-weight:900;
+  color:var(--g);
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:background .2s;
+}
+.copy-box:hover .copy-btn-tag{background:rgba(255,204,68,.25)}
+.copy-toast{
+  position:absolute;inset:0;
+  background:rgba(0,255,100,.12);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:#00ff88;font-size:16px;
+  border-radius:18px;opacity:0;pointer-events:none;
+  transition:opacity .2s;letter-spacing:2px;
+}
+.copy-toast.show{opacity:1}
+
+/* ===== VISITOR COUNTER ===== */
+.visitor-bar{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;margin-top:30px;
+  padding:12px 28px;
+  background:rgba(0,0,0,.5);
+  border:1px solid rgba(255,204,68,.2);
+  border-radius:100px;
+  width:fit-content;margin-left:auto;margin-right:auto;
+  box-shadow:0 0 30px rgba(155,48,255,.15);
+}
+.visitor-bar .icon{font-size:20px}
+.visitor-bar .label{font-size:13px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:1px}
+.visitor-bar .count{
+  font-family:'Montserrat',sans-serif;font-weight:900;
+  font-size:22px;color:var(--g);
+  text-shadow:0 0 15px var(--g);
+  min-width:60px;text-align:center;
+}
+
+/* ===== ROBOT ===== */
+#robo{
+  position:fixed;bottom:30px;right:20px;
+  z-index:9999;cursor:none;
+  opacity:0;transition:opacity .6s;
+  animation:roboFloat 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 15px var(--r));
+}
+@keyframes roboFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-14px) rotate(3deg)}
+}
+.robo-body{
+  width:68px;height:68px;
+  background:radial-gradient(circle at 35% 35%,#3a0a5e,#1a0030);
+  border-radius:22px 22px 28px 28px;
+  border:2px solid rgba(255,170,50,.8);
+  position:relative;
+  box-shadow:0 0 20px var(--r),inset 0 0 10px rgba(155,48,255,.3);
+}
+.robo-eye-row{
+  display:flex;justify-content:center;gap:14px;
+  position:absolute;top:22%;width:100%;
+}
+.robo-eye{
+  width:13px;height:13px;border-radius:50%;
+  background:radial-gradient(circle at 35%,#ff6666,#cc0000);
+  box-shadow:0 0 15px red;
+  animation:eyeBlink 2.2s infinite;
+}
+@keyframes eyeBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.robo-mouth{
+  width:32px;height:9px;
+  position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
+  background:repeating-linear-gradient(90deg,var(--g) 0,var(--g) 5px,#ff6600 5px,#ff6600 10px);
+  border-radius:2px;
+  box-shadow:0 0 8px var(--g);
+}
+.robo-spike{
+  width:14px;height:14px;background:var(--g);
+  position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(45deg);
+  box-shadow:0 0 8px var(--g);
+}
+.robo-antenna{
+  position:absolute;top:-28px;left:50%;transform:translateX(-50%);
+  width:3px;height:20px;background:rgba(255,204,68,.6);border-radius:2px;
+}
+.robo-antenna::after{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--g);box-shadow:0 0 12px var(--g);
+  animation:antennaPulse 1s infinite;
+}
+@keyframes antennaPulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ===== CORNER DECO ===== */
+.corner-deco{
+  position:fixed;pointer-events:none;z-index:6;
+  font-size:80px;opacity:0;
+  animation:cornerAppear 1s ease forwards, cornerBob 5s ease-in-out infinite;
+  filter:drop-shadow(0 0 15px var(--g));
+}
+.corner-deco.tl{top:20px;right:12px;animation-delay:.4s}
+.corner-deco.br{bottom:20px;left:12px;animation-delay:.7s}
+@keyframes cornerAppear{to{opacity:.35}}
+@keyframes cornerBob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(6deg)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:480px){
+  .card{padding:30px 18px 40px;border-radius:30px}
+  .name-text{font-size:24px}
+  .btn-label{font-size:15px}
+  .robo-body{width:54px;height:54px}
+  #robo{right:12px;bottom:16px}
+}
+</style>
 </head>
 <body>
 
-    <div class="destructive-overlay"></div>
-    <canvas id="shockWaveCanvas"></canvas>
-    <div class="shock-flash" id="flashBang"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-    <!-- صور الأيقونات بنفس المسارات الأصلية + صور افتراضية احتياطية باستخدام emojis لكن الصور ستظهر من الارتباطات القديمة -->
-    <img src="ae.png" alt="AE" class="corner-skull skull-left" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle fill=%22%23ffcc44%22 cx=%2250%22 cy=%2250%22 r=%2245%22/%3E%3C/text%3E%3C/svg%3E'">
-    <img src="am.png" alt="AM" class="corner-skull skull-right" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle fill=%22%239b30ff%22 cx=%2250%22 cy=%2250%22 r=%2245%22/%3E%3C/svg%3E'">
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="vignette"></div>
 
-    <!-- الروبوت الجديد الضاري -->
-    <div id="rageRobot" class="mech-destroyer">
-        <div class="mech-body">
-            <div class="mech-eyes"><div class="mech-eye"></div><div class="mech-eye"></div></div>
-            <div class="mech-mouth"></div>
-            <div class="spike"></div>
-        </div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<canvas id="shock-canvas"></canvas>
+<div id="flash"></div>
+
+<div class="corner-deco tl">⚡</div>
+<div class="corner-deco br">🔥</div>
+
+<!-- ROBOT -->
+<div id="robo">
+  <div class="robo-body">
+    <div class="robo-antenna"></div>
+    <div class="robo-eye-row"><div class="robo-eye"></div><div class="robo-eye"></div></div>
+    <div class="robo-mouth"></div>
+    <div class="robo-spike"></div>
+  </div>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card">
+
+  <!-- Avatar -->
+  <div class="avatar-wrap">
+    <div class="avatar-ring"></div>
+    <div class="avatar-ring-inner"></div>
+    <div class="avatar-img">
+      <img src="lg.png" alt="Iraqi Pro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:42px">👾</div>
     </div>
+    <div class="status-dot"></div>
+  </div>
 
-    <div class="apocalypse-card">
-        <!-- صورة AVATAR (lg.png) -->
-        <div class="avatar-shield">
-            <img src="lg.png" alt="Avatar" onerror="this.src='https://placehold.co/200x200/2a0a4d/ffcc44?text=IRAQI'">
-        </div>
+  <!-- Name -->
+  <div class="name-text">عـــراقـــي PRO</div>
+  <div class="sub-title">HUB · الصدمة القصوى</div>
 
-        <div class="title-wrath">
-            <img src="vr.png" alt="عراقي برو" class="glitch-title" onerror="this.src='https://placehold.co/400x80/000000/ffcc44?text=IRAQI+PRO+HUB'">
-        </div>
+  <!-- Badge -->
+  <div class="shock-badge">
+    <span>🔥 صَـدْمَـة الأَبـد · SHOCK ZONE 🔥</span>
+  </div>
 
-        <div class="crystal-doom">
-            <span>🔥 صَـدْمَـة الأَبـد 🔥</span>
-        </div>
+  <div class="divider"><span class="divider-icon">💎</span></div>
 
-        <div class="links-wrapper">
-            <!-- متجر -->
-            <a href="store.html" class="btn-warp btn-store">
-                <img src="store_icon.png" alt="🛒" class="btn-icon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M5 3h14l-1.5 9h-11z%22/%3E%3Ccircle cx=%228%22 cy=%2218%22 r=%222%22/%3E%3Ccircle cx=%2216%22 cy=%2218%22 r=%222%22/%3E%3C/svg%3E'">  متجر الأشباح 🛸
-            </a>
-
-            <!-- TikTok -->
-            <a href="https://www.tiktok.com/@lr.y7_?is_from_webapp=1&sender_device=pc" target="_blank" class="btn-warp">
-                <img src="tik.png" alt="TT" class="btn-icon" onerror="this.src='https://placehold.co/32x32/000/fff?text=TT'"> TIKTOK | اختراق
-            </a>
-
-            <!-- Telegram رابط مباشر -->
-            <a href="https://t.me/moamdbt" target="_blank" class="btn-warp" id="teleLinkBtn">
-                <img src="tly.png" alt="TG" class="btn-icon" onerror="this.src='https://placehold.co/32x32/229ED9/fff?text=TG'"> TELEGRAM | خـلـيـجـي
-            </a>
-
-            <!-- صندوق الكوبي القوي -->
-            <div class="copy-destroy" id="copyBrutalBox">
-                <span style="flex:1; text-align: center; font-weight: bold;">🔗 https://t.me/mf5rh_777</span>
-                <span class="copy-icon-brutal">⚡ نسخ ⚡</span>
-            </div>
-
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/lr.7y?igsh=cW1zOGY4aDk4MG56" target="_blank" class="btn-warp">
-                <img src="ins.png" alt="IG" class="btn-icon" onerror="this.src='https://placehold.co/32x32/E4405F/fff?text=IG'"> انستجرام | خلف الكواليس
-            </a>
-        </div>
-
-        <div class="visitor-nuke">
-            <div class="badge">💀 زوار الصدمة 💀 <span id="visitorCounter">0</span></div>
-        </div>
+  <!-- STORE -->
+  <a href="store.html" class="btn btn-store">
+    <div class="btn-border"></div>
+    <div class="btn-inner">
+      <span class="btn-emoji">🛒</span>
+      <div class="btn-label">متجر الأشباح<small>GHOST STORE · حصري</small></div>
+      <span class="btn-arrow">◄</span>
     </div>
+  </a>
 
-    <script>
-        (function() {
-            // توليد موجات صدمة وكرت مدمر
-            const shockCanvas = document.getElementById('shockWaveCanvas');
-            const ctx = shockCanvas.getContext('2d');
-            let width = window.innerWidth, height = window.innerHeight;
-            let shockWaves = [];
+  <!-- TIKTOK -->
+  <a href="https://www.tiktok.com/@lr.y7_?is_from_webapp=1&sender_device=pc" target="_blank" class="btn btn-tiktok">
+    <div class="btn-border"></div>
+    <div class="btn-inner">
+      <span class="btn-emoji">🎵</span>
+      <div class="btn-label">TikTok | اختراق<small>@lr.y7_ · المحتوى الصادم</small></div>
+      <span class="btn-arrow">◄</span>
+    </div>
+  </a>
 
-            function resizeCanvas() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                shockCanvas.width = width;
-                shockCanvas.height = height;
-            }
-            window.addEventListener('resize', () => resizeCanvas());
-            resizeCanvas();
+  <!-- TELEGRAM -->
+  <a href="https://t.me/moamdbt" target="_blank" class="btn btn-telegram">
+    <div class="btn-border"></div>
+    <div class="btn-inner">
+      <span class="btn-emoji">✈️</span>
+      <div class="btn-label">Telegram | خلـيـجـي<small>@moamdbt · القناة الرسمية</small></div>
+      <span class="btn-arrow">◄</span>
+    </div>
+  </a>
 
-            function addShockWave(x, y) {
-                shockWaves.push({ x, y, radius: 5, maxRadius: 140, alpha: 0.8, speed: 8 });
-            }
+  <!-- COPY LINK -->
+  <div class="copy-box" id="copyBox">
+    <span class="btn-emoji" style="font-size:20px;flex-shrink:0">🔗</span>
+    <div class="copy-box-text">https://t.me/mf5rh_777</div>
+    <div class="copy-btn-tag">⚡ نسخ</div>
+    <div class="copy-toast" id="copyToast">✓ تم النسخ!</div>
+  </div>
 
-            function animateShockwaves() {
-                if (!ctx) return;
-                ctx.clearRect(0, 0, width, height);
-                for (let i = 0; i < shockWaves.length; i++) {
-                    let w = shockWaves[i];
-                    w.radius += w.speed;
-                    w.alpha -= 0.025;
-                    if (w.alpha <= 0 || w.radius > w.maxRadius) {
-                        shockWaves.splice(i,1);
-                        i--;
-                        continue;
-                    }
-                    ctx.beginPath();
-                    ctx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
-                    const gradient = ctx.createRadialGradient(w.x, w.y, w.radius*0.2, w.x, w.y, w.radius);
-                    gradient.addColorStop(0, `rgba(255, 204, 68, ${w.alpha*0.9})`);
-                    gradient.addColorStop(1, `rgba(155, 48, 255, ${w.alpha*0.5})`);
-                    ctx.strokeStyle = `rgba(255, 200, 80, ${w.alpha})`;
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                }
-                requestAnimationFrame(animateShockwaves);
-            }
-            animateShockwaves();
+  <!-- INSTAGRAM -->
+  <a href="https://www.instagram.com/lr.7y?igsh=cW1zOGY4aDk4MG56" target="_blank" class="btn btn-instagram">
+    <div class="btn-border"></div>
+    <div class="btn-inner">
+      <span class="btn-emoji">📸</span>
+      <div class="btn-label">Instagram | خلف الكواليس<small>@lr.7y · الحياة الحقيقية</small></div>
+      <span class="btn-arrow">◄</span>
+    </div>
+  </a>
 
-            // فلاش عشوائي صادم
-            const flashDiv = document.getElementById('flashBang');
-            function randomFlash() {
-                flashDiv.style.opacity = '0.45';
-                setTimeout(() => { flashDiv.style.opacity = '0'; }, 95);
-                // إضافة موجة صدمة عشوائية بناءً على مكان الفأرة إذا أمكن وإلا في المنتصف
-                if (window.lastMouseX && window.lastMouseY) {
-                    addShockWave(lastMouseX, lastMouseY);
-                } else {
-                    addShockWave(width/2, height/2);
-                }
-                // اهتزاز بسيط
-                document.body.style.transform = 'translate(2px, -1px)';
-                setTimeout(() => { document.body.style.transform = ''; }, 60);
-            }
-            setInterval(() => {
-                if (Math.random() > 0.65) randomFlash();
-            }, 4000);
+  <div class="divider"><span class="divider-icon">👁</span></div>
 
-            document.body.addEventListener('mousemove', (e) => {
-                window.lastMouseX = e.clientX;
-                window.lastMouseY = e.clientY;
-            });
-            document.body.addEventListener('click', (e) => {
-                addShockWave(e.clientX, e.clientY);
-                flashDiv.style.opacity = '0.3';
-                setTimeout(() => flashDiv.style.opacity = '0', 70);
-            });
+  <!-- VISITOR -->
+  <div class="visitor-bar">
+    <span class="icon">💀</span>
+    <span class="label">زوار الصدمة</span>
+    <span class="count" id="visitorCount">0</span>
+  </div>
 
-            // توليد جزيئات بلازما مدمرة
-            for (let i = 0; i < 55; i++) {
-                let part = document.createElement('div');
-                part.classList.add('plasma-particle');
-                part.style.left = Math.random() * 100 + '%';
-                part.style.animationDelay = Math.random() * 5 + 's';
-                part.style.animationDuration = 4 +
+</div>
+
+<script>
+(function(){
+// ===== CURSOR =====
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=window.innerWidth/2, my=window.innerHeight/2;
+let rx=mx, ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,.copy-box').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='22px';cur.style.height='22px';ring.style.width='60px';ring.style.height='60px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='38px';ring.style.height='38px'});
+});
+
+// ===== BACKGROUND STARS =====
+const bgC=document.getElementById('bg-canvas');
+const bgX=bgC.getContext('2d');
+let bW=window.innerWidth,bH=window.innerHeight;
+bgC.width=bW;bgC.height=bH;
+const stars=[];
+for(let i=0;i<200;i++)stars.push({x:Math.random()*bW,y:Math.random()*bH,r:Math.random()*1.5+.3,alpha:Math.random(),speed:Math.random()*.002+.001,color:Math.random()>.7?'#ffcc44':Math.random()>.5?'#9b30ff':'#fff'});
+function drawBg(){
+  bgX.clearRect(0,0,bW,bH);
+  stars.forEach(s=>{s.alpha+=Math.sin(Date.now()*s.speed)*.01;s.alpha=Math.max(.1,Math.min(.9,s.alpha));bgX.beginPath();bgX.arc(s.x,s.y,s.r,0,Math.PI*2);bgX.fillStyle=s.color.replace(')',`,${s.alpha})`).replace('rgb','rgba').replace('#','rgba(').replace('rgba(','#');
+  bgX.globalAlpha=s.alpha;bgX.fillStyle=s.color;bgX.fill();bgX.globalAlpha=1});
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+window.addEventListener('resize',()=>{bW=bgC.width=window.innerWidth;bH=bgC.height=window.innerHeight});
+
+// ===== SHOCKWAVES =====
+const sC=document.getElementById('shock-canvas');
+const sX=sC.getContext('2d');
+let sW=window.innerWidth,sH=window.innerHeight;
+sC.width=sW;sC.height=sH;
+let waves=[];
+function addWave(x,y,color='#ffcc44'){waves.push({x,y,r:4,maxR:200,a:.7,speed:7,color})}
+function drawWaves(){
+  sX.clearRect(0,0,sW,sH);
+  for(let i=waves.length-1;i>=0;i--){
+    let w=waves[i];w.r+=w.speed;w.a-=.022;
+    if(w.a<=0||w.r>w.maxR){waves.splice(i,1);continue}
+    sX.beginPath();sX.arc(w.x,w.y,w.r,0,Math.PI*2);
+    sX.strokeStyle=`rgba(${w.color==='#9b30ff'?'155,48,255':'255,204,68'},${w.a})`;
+    sX.lineWidth=2.5;sX.stroke();
+    // inner ring
+    sX.beginPath();sX.arc(w.x,w.y,w.r*.6,0,Math.PI*2);
+    sX.strokeStyle=`rgba(255,255,255,${w.a*.3})`;
+    sX.lineWidth=1;sX.stroke();
+  }
+  requestAnimationFrame(drawWaves);
+}
+drawWaves();
+window.addEventListener('resize',()=>{sW=sC.width=window.innerWidth;sH=sC.height=window.innerHeight});
+
+// ===== CLICK EFFECTS =====
+const flash=document.getElementById('flash');
+document.addEventListener('click',e=>{
+  addWave(e.clientX,e.clientY);addWave(e.clientX,e.clientY,'#9b30ff');
+  flash.style.opacity='.25';setTimeout(()=>flash.style.opacity='0',80);
+  // burst particles
+  for(let i=0;i<8;i++){
+    let p=document.createElement('div');p.className='spark';
+    p.style.cssText=`left:${e.clientX}px;top:${e.clientY}px;width:${Math.random()*5+2}px;height:${Math.random()*5+2}px;background:${Math.random()>.5?'#ffcc44':'#9b30ff'};animation-duration:${Math.random()*.8+.4}s;animation-delay:0s`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),1200);
+  }
+});
+document.addEventListener('mousemove',e=>{
+  if(Math.random()>.97)addWave(e.clientX,e.clientY);
+});
+
+// ===== RANDOM FLASH =====
+setInterval(()=>{
+  if(Math.random()>.6){
+    flash.style.opacity='.18';setTimeout(()=>flash.style.opacity='0',70);
+    addWave(sW/2+Math.random()*200-100,sH/2+Math.random()*200-100);
+    document.body.style.transform=`translate(${Math.random()*4-2}px,${Math.random()*3-1}px)`;
+    setTimeout(()=>document.body.style.transform='',55);
+  }
+},3500);
+
+// ===== FLOATING SPARKS =====
+for(let i=0;i<60;i++){
+  let p=document.createElement('div');p.className='spark';
+  p.style.cssText=`left:${Math.random()*100}%;bottom:0;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;background:${['#ffcc44','#9b30ff','#ff6600','#ff00cc'][Math.floor(Math.random()*4)]};animation-duration:${Math.random()*8+4}s;animation-delay:${Math.random()*8}s`;
+  document.body.appendChild(p);
+}
+
+// ===== ROBOT =====
+setTimeout(()=>{document.getElementById('robo').style.opacity='1'},600);
+const robo=document.getElementById('robo');
+let roboX=window.innerWidth-90,roboY=window.innerHeight-100;
+let roboVx=-1.5,roboVy=-1.2;
+let isDrag=false,dx=0,dy=0;
+robo.addEventListener('mousedown',e=>{isDrag=true;dx=e.clientX-roboX;dy=e.clientY-roboY;robo.style.cursor='grabbing'});
+document.addEventListener('mouseup',()=>{isDrag=false;robo.style.cursor='none'});
+document.addEventListener('mousemove',e=>{if(isDrag){roboX=e.clientX-dx;roboY=e.clientY-dy;robo.style.right='auto';robo.style.bottom='auto';robo.style.left=roboX+'px';robo.style.top=roboY+'px'}});
+
+// ===== VISITOR COUNTER =====
+const visEl=document.getElementById('visitorCount');
+let v=parseInt(localStorage.getItem('vCount')||'0');
+if(!localStorage.getItem('visited')){v++;localStorage.setItem('visited','1');localStorage.setItem('vCount',v)}
+let displayed=Math.max(0,v-1);
+const target=v+Math.floor(Math.random()*8000+2000);
+function animCount(){
+  if(displayed<target){displayed+=Math.ceil((target-displayed)/18);visEl.textContent=displayed.toLocaleString('ar');requestAnimationFrame(animCount)}
+}
+setTimeout(animCount,500);
+
+// ===== COPY =====
+document.getElementById('copyBox').addEventListener('click',()=>{
+  navigator.clipboard.writeText('https://t.me/mf5rh_777').then(()=>{
+    const t=document.getElementById('copyToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);
+    addWave(window.innerWidth/2,window.innerHeight/2,'#9b30ff');
+  }).catch(()=>{});
+});
+
+})();
+</script>
+</body>
+</html>
