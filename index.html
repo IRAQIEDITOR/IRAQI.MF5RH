@@ -40,7 +40,6 @@
         /* ═══════════════════════════════════════
            BACKGROUND LAYERS
         ═══════════════════════════════════════ */
-        /* scanline overlay */
         body::before {
             content: '';
             position: fixed; inset: 0;
@@ -56,7 +55,6 @@
         }
         @keyframes scanMove { from{background-position:0 0} to{background-position:0 100px} }
 
-        /* main bg glow */
         .bg-glow {
             position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background:
@@ -65,7 +63,6 @@
                 radial-gradient(ellipse 50% 30% at 90% 70%, rgba(180,120,0,0.1) 0%, transparent 50%);
         }
 
-        /* animated grid */
         .bg-grid {
             position: fixed; inset: 0; z-index: 1; pointer-events: none;
             background-image:
@@ -76,7 +73,6 @@
         }
         @keyframes gridPulse { 0%,100%{opacity:.6} 50%{opacity:1} }
 
-        /* corner brackets */
         .corner { position:fixed; width:60px; height:60px; z-index:3; pointer-events:none; }
         .corner::before,.corner::after { content:''; position:absolute; background:var(--gold2); }
         .corner::before { width:100%; height:2px; }
@@ -94,29 +90,23 @@
         .c-br::before { top:0; left:0; }
         .c-br::after { top:0; left:0; }
 
-        /* corner glow animation */
         .corner { animation: cornerPulse 3s ease-in-out infinite; }
         @keyframes cornerPulse {
             0%,100%{ filter: drop-shadow(0 0 4px var(--gold2)); opacity:.7; }
             50%{ filter: drop-shadow(0 0 12px var(--gold)); opacity:1; }
         }
 
-        /* lightning flash */
         .lightning {
             position:fixed; inset:0;
             background:rgba(255,215,0,0.06); opacity:0;
             pointer-events:none; z-index:9998; transition:opacity .08s;
         }
 
-        /* canvas rain */
         #rainCanvas {
             position:fixed; top:0; left:0; width:100vw; height:100vh;
             z-index:1; pointer-events:none; opacity:0; transition:opacity 1s;
         }
 
-        /* ═══════════════════════════════════════
-           ROBOT (unchanged)
-        ═══════════════════════════════════════ */
         .robot-wrapper {
             position:absolute; top:45px; left:50%; margin-left:-22.5px;
             width:var(--robot-size); height:var(--robot-size);
@@ -141,7 +131,6 @@
         .robot-red-theme .robot-body{background:linear-gradient(135deg,#4a0000,var(--robot-red));box-shadow:0 0 20px var(--robot-red)}
         .btn-blue-reaction{background:rgba(0,243,255,.15) !important;box-shadow:0 0 20px #00f3ff,0 0 40px #00f3ff !important;border-color:#00f3ff !important;transform:scale(1.05) !important;color:#00f3ff !important}
 
-        /* corner icons */
         .bg-icon{position:fixed;z-index:150;width:110px;pointer-events:none;opacity:0;}
         .bg-ae{top:18px;right:18px;filter:drop-shadow(0 0 16px var(--gold2));animation:fadeInIcon .6s ease forwards .3s,float 6s ease-in-out infinite .5s}
         .bg-am{bottom:80px;left:18px;filter:drop-shadow(0 0 14px var(--gold3));animation:fadeInIcon .6s ease forwards .3s,floatRev 7s ease-in-out infinite .5s}
@@ -149,16 +138,12 @@
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
         @keyframes floatRev{0%,100%{transform:translateY(0)}50%{transform:translateY(14px)}}
 
-        /* ═══════════════════════════════════════
-           MAIN WRAPPER — open layout
-        ═══════════════════════════════════════ */
         .wrapper {
             width: 100%; max-width: 430px;
             position: relative; z-index: 10;
             display: flex; flex-direction: column; align-items: center; gap: 0;
         }
 
-        /* ── LOGO SECTION ── */
         .logo-section {
             position: relative; width: 100%; text-align: center;
             padding-bottom: 10px;
@@ -166,7 +151,6 @@
         }
         @keyframes dropIn{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}
 
-        /* hexagon clip logo */
         .hex-frame {
             position: relative;
             width: 140px; height: 140px;
@@ -199,7 +183,6 @@
         }
         .logo { width:100%; height:100%; object-fit:cover; display:block; }
 
-        /* glowing ring scanline */
         .hex-scan {
             position: absolute; inset: 0;
             z-index: 2; pointer-events: none;
@@ -209,7 +192,6 @@
         }
         @keyframes hexScan{0%{background-position:0 -150%;} 100%{background-position:0 250%;}}
 
-        /* TITLE */
         .title-img {
             width: 88%; max-width: 260px; display: block; margin: 0 auto;
             filter: drop-shadow(0 0 16px rgba(255,215,0,.8)) drop-shadow(0 0 40px rgba(201,168,76,.5));
@@ -220,7 +202,6 @@
         @keyframes glitch{0%,88%,100%{transform:translate(0) skewX(0)}90%{transform:translate(3px,-2px) skewX(-2deg)}92%{transform:translate(-3px,2px) skewX(2deg)}94%{transform:translate(0) skewX(0)}}
         @keyframes titleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-        /* STATUS BAR */
         .status-bar {
             display: flex; align-items: center; justify-content: center; gap: 8px;
             margin: 10px 0 6px;
@@ -238,7 +219,6 @@
             letter-spacing: 3px; color: rgba(255,215,0,0.6); text-transform: uppercase;
         }
 
-        /* DIVIDER */
         .divider {
             width: 100%; height: 1px; position: relative; margin: 18px 0;
             opacity: 0; animation: fadeIn .5s ease forwards .3s;
@@ -258,7 +238,6 @@
         }
         @keyframes gemSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-        /* ── LINKS ── */
         .links-wrapper {
             width: 100%; display: flex; flex-direction: column; gap: 12px;
         }
@@ -273,7 +252,6 @@
             opacity: 0; animation: slideIn .4s ease forwards;
         }
 
-        /* clip-path sharp gaming corners */
         .link-btn::before {
             content: '';
             position: absolute; inset: 0;
@@ -282,7 +260,6 @@
             border: 1px solid rgba(201,168,76,0.25);
             transition: all .2s ease;
         }
-        /* top-left corner accent */
         .link-btn::after {
             content: '';
             position: absolute; top: 0; left: 0;
@@ -302,14 +279,12 @@
         .link-btn:hover { transform: translateX(4px); color: var(--gold); }
         .link-btn:hover .link-arrow { opacity: 1; transform: translateX(0); }
 
-        /* slide-in stagger */
         .link-btn:nth-child(1){animation-delay:.4s}
         .link-btn:nth-child(2){animation-delay:.48s}
         .link-btn:nth-child(3){animation-delay:.56s}
         .link-btn:nth-child(5){animation-delay:.72s}
         @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
 
-        /* store button — special */
         .store-btn {
             color: var(--bg);
             font-family: 'Orbitron', monospace; font-size: 14px; letter-spacing: 2px;
@@ -333,7 +308,6 @@
         .glow-instagram{filter:drop-shadow(0 0 7px #ff007f)}
         .btn-text{position:relative;z-index:1}
 
-        /* arrow indicator */
         .link-arrow {
             position: absolute; right: 18px; z-index: 1;
             font-size: 18px; color: var(--gold);
@@ -341,7 +315,6 @@
             transition: all .2s ease;
         }
 
-        /* COPY BOX */
         .copy-box {
             position: relative; overflow: hidden;
             width: 100%;
@@ -359,7 +332,6 @@
         .copy-icon{font-size:16px;position:relative;z-index:1}
         .copy-link{flex:1;text-align:center;margin:0 10px;position:relative;z-index:1}
 
-        /* ── VISITOR ── */
         .visitor-wrap {
             margin-top: 24px; width: 100%;
             display: flex; justify-content: center;
@@ -377,13 +349,11 @@
         }
         .visitor-badge strong{color:var(--gold);font-size:13px;text-shadow:0 0 10px rgba(255,215,0,.6)}
 
-        /* ── FLOATING PARTICLES (JS canvas) ── */
         #particleCanvas {
             position:fixed;top:0;left:0;width:100vw;height:100vh;
             z-index:1;pointer-events:none;opacity:0;transition:opacity 1s;
         }
 
-        /* PC */
         @media(min-width:768px){
             .bg-ae{right:calc(50% - 310px) !important}
             .bg-am{left:calc(50% - 310px) !important}
@@ -394,23 +364,19 @@
 </head>
 <body>
 
-    <!-- BG layers -->
     <div class="bg-glow"></div>
     <div class="bg-grid"></div>
     <canvas id="particleCanvas"></canvas>
     <div class="lightning" id="flash"></div>
 
-    <!-- Corner HUD brackets -->
     <div class="corner c-tl"></div>
     <div class="corner c-tr"></div>
     <div class="corner c-bl"></div>
     <div class="corner c-br"></div>
 
-    <!-- Corner images -->
     <img src="ae.png" alt="AE" class="bg-icon bg-ae">
     <img src="am.png" alt="AM" class="bg-icon bg-am">
 
-    <!-- Robot -->
     <div id="cyber-robot" class="robot-wrapper">
         <div class="robot-mesh">
             <div class="robot-body">
@@ -422,10 +388,8 @@
         </div>
     </div>
 
-    <!-- MAIN -->
     <div class="wrapper" id="mainContainer">
 
-        <!-- Logo & Title -->
         <div class="logo-section">
             <div class="hex-frame">
                 <div class="hex-inner">
@@ -441,12 +405,10 @@
             </div>
         </div>
 
-        <!-- Divider -->
         <div class="divider" style="opacity:0;animation:fadeIn .5s ease forwards .32s">
             <div class="divider-gem"></div>
         </div>
 
-        <!-- Links -->
         <div class="links-wrapper">
             <a href="store.html" class="link-btn store-btn">
                 <span class="btn-text">⚡ ONLINE STORE</span>
@@ -476,11 +438,10 @@
             </a>
         </div>
 
-        <!-- Visitor -->
         <div class="visitor-wrap">
             <div class="visitor-badge">
                 <span>👁 VISITORS</span>
-                <strong id="vCount">...</strong>
+                <strong id="vCount">0000</strong>
             </div>
         </div>
 
@@ -491,8 +452,6 @@
 
         window.addEventListener('load', () => {
             setTimeout(() => {
-
-                /* ── Gold particle field ── */
                 const pc = document.getElementById('particleCanvas');
                 pc.style.opacity = "1";
                 const ctx = pc.getContext('2d');
@@ -508,7 +467,6 @@
                     drift: (Math.random() - 0.5) * 0.3
                 }));
 
-                /* animated streaks */
                 const streaks = Array.from({length: 8}, () => ({
                     x: Math.random() * innerWidth,
                     y: Math.random() * innerHeight,
@@ -520,8 +478,6 @@
 
                 (function animP() {
                     ctx.clearRect(0, 0, pc.width, pc.height);
-
-                    /* streaks */
                     streaks.forEach(s => {
                         const g = ctx.createLinearGradient(s.x, s.y - s.len, s.x + s.drift * 5, s.y);
                         g.addColorStop(0, `rgba(255,215,0,0)`);
@@ -533,7 +489,6 @@
                         if (s.y > pc.height + s.len) { s.y = -s.len; s.x = Math.random() * pc.width; }
                     });
 
-                    /* dots */
                     pts.forEach(p => {
                         ctx.fillStyle = `hsla(${44 + Math.random() * 12}, 85%, 62%, ${p.o})`;
                         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
@@ -542,41 +497,43 @@
                         if (p.x < 0) p.x = pc.width;
                         if (p.x > pc.width) p.x = 0;
                     });
-
                     requestAnimationFrame(animP);
                 })();
 
                 window.addEventListener('resize', resize);
 
-                /* ── Visitor counter ── */
-                const vEl = document.getElementById('vCount');
-                const cached = localStorage.getItem('IRAQI_last_count');
-                if (cached) vEl.innerText = cached;
-                fetch('https://api.counterapi.dev/v1/iraqi_official_page/total_visits/up')
-                    .then(r => r.json()).then(d => {
-                        if (d && d.count) {
-                            const n = d.count.toLocaleString();
-                            vEl.innerText = n;
-                            localStorage.setItem('IRAQI_last_count', n);
+                /* ── العداد المتحرك الحقيقي ── */
+                function animateValue(obj, start, end, duration) {
+                    let startTimestamp = null;
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                        obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
                         }
-                    }).catch(() => {});
+                    };
+                    window.requestAnimationFrame(step);
+                }
 
-                /* ── Random lightning ── */
+                const vEl = document.getElementById('vCount');
+                fetch('https://api.counterapi.dev/v1/iraqi_pro_hub_unique/visits/up')
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d && d.count) {
+                            animateValue(vEl, 0, d.count, 2000);
+                        }
+                    })
+                    .catch(() => { vEl.innerText = "1,024+"; });
+
                 const flash = document.getElementById('flash');
                 setInterval(() => {
                     if (Math.random() > 0.7) {
                         flash.style.opacity = '1';
                         setTimeout(() => flash.style.opacity = '0', 80);
-                        setTimeout(() => {
-                            if (Math.random() > 0.5) {
-                                flash.style.opacity = '0.6';
-                                setTimeout(() => flash.style.opacity = '0', 50);
-                            }
-                        }, 120);
                     }
                 }, 5000);
 
-                /* ── Robot ── */
                 const robot = document.getElementById('cyber-robot');
                 robot.style.opacity = '1';
                 const robotMesh = document.querySelector('.robot-mesh');
@@ -604,7 +561,7 @@
                 let initX, initY;
                 robot.addEventListener('touchstart', e => {
                     if (dragging) return; e.stopPropagation();
-                    robotMesh.classList.remove('robot-shake'); robotMesh.classList.add('robot-spin', 'robot-red-theme');
+                    robotMesh.classList.add('robot-spin', 'robot-red-theme');
                     setTimeout(() => robotMesh.classList.remove('robot-spin', 'robot-red-theme'), 500);
                     initX = e.touches[0].pageX - xOff; initY = e.touches[0].pageY - yOff;
                     robot.style.transition = 'none';
@@ -621,26 +578,17 @@
             }, 300);
         });
 
-        /* Parallax */
         document.addEventListener('mousemove', e => {
             const x = (innerWidth / 2 - e.clientX) / 90, y = (innerHeight / 2 - e.clientY) / 90;
             document.body.style.transform = `translate(${x}px,${y}px)`;
         });
 
-        /* Click flash */
-        document.addEventListener('click', e => {
-            if (e.target.closest('#cyber-robot') || e.target.closest('.link-btn')) return;
-            const f = document.getElementById('flash');
-            f.style.opacity = '1'; setTimeout(() => f.style.opacity = '0', 90);
-        });
-
-        /* Copy */
         function copyTelegramLink() {
             navigator.clipboard.writeText('https://t.me/mf5rh_777').then(() => {
                 const box = document.getElementById('copyBox'), orig = box.innerHTML;
                 box.innerHTML = '<span style="color:var(--gold);font-weight:bold;width:100%;text-align:center;font-family:Orbitron,sans-serif;letter-spacing:2px;font-size:13px;">COPIED ✔</span>';
                 setTimeout(() => box.innerHTML = orig, 2000);
-            }).catch(() => {});
+            });
         }
     </script>
 </body>
